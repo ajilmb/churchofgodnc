@@ -764,6 +764,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // 5. Trigger Animation (Slide Up)
         mbImage.classList.remove('slide-up-initial');
+        mbImage.classList.add('hero-revealed'); // Reveal image from default hidden state
 
         // Wait for fade-in (2s) to finish before ghosting - transition time is 2s (css)
         setTimeout(() => {
