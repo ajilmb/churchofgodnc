@@ -216,7 +216,7 @@ body {
 .side-controls {
     position: absolute;
     right: 15px;
-    top: 60%;
+    top: 72%;
     /* Moved up from 72% to center easier */
     transform: translateY(-50%);
     display: flex;
