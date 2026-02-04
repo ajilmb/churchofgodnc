@@ -2144,4 +2144,170 @@ document.addEventListener('DOMContentLoaded', () => {
         renderSkeleton();
     }
 
+    // --- IMAGE SKELETON HANDLING (.mb) ---
+    // Purpose: Replace broken image icon with sweep animation when offline
+
+    function monitorHeroImage() {
+        if (!mbImage) return;
+
+        // Create ID for skeleton reference
+        const SKELETON_ID = 'hero-skeleton-loader';
+
+        const enableSkeleton = () => {
+            // Avoid duplicates
+            if (document.getElementById(SKELETON_ID)) return;
+
+            const skeleton = document.createElement('div');
+            skeleton.id = SKELETON_ID;
+            // Inherit .mb positioning classes
+            skeleton.className = 'mb skeleton-sweep';
+
+            // Adjust styles to match exact geometry of .mb
+            // .mb is bottom -10vh, height 85vh. 
+            // We need to ensure this new div has width.
+            // .mb is an IMG so it has intrinsic width. The div won't.
+            // We'll set a reasonable width or aspect ratio. 
+            // Assuming portrait, let's say 400px max or auto.
+            skeleton.style.width = '100%';
+            skeleton.style.maxWidth = '500px'; // Approx width of person image
+            // skeleton.style.background = '#1a1a1a'; // handled by CSS class
+
+            // Insert
+            mbImage.parentNode.insertBefore(skeleton, mbImage);
+
+            // Hide broken image
+            mbImage.style.display = 'none';
+        };
+
+        const disableSkeleton = () => {
+            const skeleton = document.getElementById(SKELETON_ID);
+            if (skeleton) skeleton.remove();
+
+            mbImage.style.display = 'block';
+            if (document.body.classList.contains('intro-finished')) {
+                mbImage.classList.add('hero-revealed');
+            }
+        };
+
+        // Listeners
+        mbImage.addEventListener('error', () => {
+            if (!navigator.onLine) {
+                enableSkeleton();
+            }
+        });
+
+        mbImage.addEventListener('load', () => {
+            disableSkeleton();
+        });
+
+        // Initial Status Check
+        if (mbImage.complete && mbImage.naturalWidth === 0) {
+            // If failed already
+            if (!navigator.onLine) enableSkeleton();
+        }
+
+        // Retry on Online
+        window.addEventListener('online', () => {
+            // Check if currently broken/skeleton is active
+            if (document.getElementById(SKELETON_ID)) {
+                console.log("Network back: Retrying Hero Image...");
+                const currentSrc = mbImage.src.split('?')[0];
+                mbImage.src = currentSrc + '?t=' + Date.now();
+            }
+        });
+    }
+
+    // Start Monitoring
+    monitorHeroImage();
+
+    // --- DOUBLE PRESS BACK TO EXIT LOGIC ---
+    let backPressTimer = null;
+    const toast = document.getElementById('back-press-toast');
+
+    // Ensure Initial History State on Load
+    if (!history.state) {
+        let initialPage = 'home';
+        const urlParams = new URL(window.location.href).searchParams;
+        if (urlParams.get('page')) initialPage = urlParams.get('page');
+
+        history.replaceState({ page: initialPage }, '', window.location.href);
+    }
+
+    window.addEventListener('popstate', (e) => {
+        // 1. Navigation Handling (If state exists)
+        if (e.state && e.state.page) {
+            const pageId = e.state.page;
+            const idx = pages.findIndex(p => p.id === pageId);
+            if (idx !== -1) {
+                currentPageIndex = idx;
+                updateContent();
+                updatePageMetadata(pageId);
+                return;
+            }
+        }
+
+        // 2. Exit Trap Logic
+        if (toast && toast.classList.contains('visible')) {
+            // Allow Exit (Browser default behavior proceeds)
+            return;
+        }
+
+        // Show Toast and Push State to Trap
+        if (toast) {
+            toast.classList.add('visible');
+
+            // Push state back to stay on current page
+            const currentPageId = pages[currentPageIndex].id;
+            history.pushState({ page: currentPageId }, '', `?page=${currentPageId}`);
+
+            clearTimeout(backPressTimer);
+            backPressTimer = setTimeout(() => {
+                toast.classList.remove('visible');
+            }, 2000);
+        }
+    });
+
+    // --- SWIPE NAVIGATION LOGIC ---
+    let touchStartX = 0;
+    let touchEndX = 0;
+    let touchStartY = 0;
+
+    document.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+        touchStartY = e.changedTouches[0].screenY;
+    }, { passive: false });
+
+    document.addEventListener('touchend', (e) => {
+        touchEndX = e.changedTouches[0].screenX;
+        const touchEndY = e.changedTouches[0].screenY;
+        handleSwipeGesture(touchEndY);
+    }, { passive: false });
+
+    function handleSwipeGesture(touchEndY) {
+        // 1. Safety Checks
+        // If Vibe Game is playing, don't swipe navigate (Game uses swipe/touch controls)
+        if (pages[currentPageIndex].id === 'vibe' && typeof gameState !== 'undefined' && gameState === 'PLAYING') return;
+
+        // If inside a scrollable container (like Blog content), be careful.
+        // But main navigation is horizontal swipe, usually distinct from vertical scroll.
+        // Let's ensure it's a MAINLY HORIZONTAL swipe.
+
+        const deltaX = touchEndX - touchStartX;
+        const deltaY = touchEndY - touchStartY;
+
+        // Thresholds
+        const MIN_SWIPE_DISTANCE = 50;
+        const MAX_VERTICAL_DEVIATION = 50; // Don't trigger if user is scrolling down
+
+        if (Math.abs(deltaX) > MIN_SWIPE_DISTANCE && Math.abs(deltaY) < MAX_VERTICAL_DEVIATION) {
+            if (deltaX < 0) {
+                // Swiped Left -> Go Next
+                handleNavigation('next');
+            } else {
+                // Swiped Right -> Go Prev
+                handleNavigation('prev');
+            }
+        }
+    }
+
 });
