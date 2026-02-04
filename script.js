@@ -788,9 +788,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 setTimeout(() => {
                     pwaSplash.style.display = 'none';
                     // NOW Start Standard Radio Wave Boot
-                    startStandardBoot(false);
                 }, 500);
-            }, 2500); // 2.5s for Rockstar Animation visibility
+            }, 4200); // 1.5s Delay + 2.5s Anim + Buffer
             return;
         }
 
@@ -2221,52 +2220,37 @@ document.addEventListener('DOMContentLoaded', () => {
     // Start Monitoring
     monitorHeroImage();
 
-    // --- DOUBLE PRESS BACK TO EXIT LOGIC ---
-    let backPressTimer = null;
-    const toast = document.getElementById('back-press-toast');
+    // --- EXIT APP LOGIC (PWA) ---
+    const exitAppBtn = document.getElementById('exitAppBtn');
+    const exitModal = document.getElementById('exitModal');
+    const confirmExitBtn = document.getElementById('confirmExitBtn');
+    const cancelExitBtn = document.getElementById('cancelExitBtn');
 
-    // Ensure Initial History State on Load
-    if (!history.state) {
-        let initialPage = 'home';
-        const urlParams = new URL(window.location.href).searchParams;
-        if (urlParams.get('page')) initialPage = urlParams.get('page');
+    // Check if PWA (Standalone)
+    const isPWA = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
 
-        history.replaceState({ page: initialPage }, '', window.location.href);
+    if (isPWA && exitAppBtn) {
+        exitAppBtn.style.display = 'block'; // Show button only in App
     }
 
-    window.addEventListener('popstate', (e) => {
-        // 1. Navigation Handling (If state exists)
-        if (e.state && e.state.page) {
-            const pageId = e.state.page;
-            const idx = pages.findIndex(p => p.id === pageId);
-            if (idx !== -1) {
-                currentPageIndex = idx;
-                updateContent();
-                updatePageMetadata(pageId);
-                return;
-            }
-        }
+    if (exitAppBtn && exitModal) {
+        exitAppBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            exitModal.classList.remove('hidden-popup');
+            exitModal.classList.add('show-popup');
+        });
 
-        // 2. Exit Trap Logic
-        if (toast && toast.classList.contains('visible')) {
-            // Allow Exit (Browser default behavior proceeds)
-            return;
-        }
+        cancelExitBtn.addEventListener('click', () => {
+            exitModal.classList.remove('show-popup');
+            setTimeout(() => {
+                exitModal.classList.add('hidden-popup');
+            }, 500);
+        });
 
-        // Show Toast and Push State to Trap
-        if (toast) {
-            toast.classList.add('visible');
-
-            // Push state back to stay on current page
-            const currentPageId = pages[currentPageIndex].id;
-            history.pushState({ page: currentPageId }, '', `?page=${currentPageId}`);
-
-            clearTimeout(backPressTimer);
-            backPressTimer = setTimeout(() => {
-                toast.classList.remove('visible');
-            }, 2000);
-        }
-    });
+        confirmExitBtn.addEventListener('click', () => {
+            window.close(); // Works in PWA
+        });
+    }
 
     // --- SWIPE NAVIGATION LOGIC ---
     let touchStartX = 0;
@@ -2338,3 +2322,158 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 });
+
+// --- COOKIE CONSENT LOGIC ---
+const cookieStrip = document.getElementById('cookieConsentStrip');
+const cookieModal = document.getElementById('cookiePolicyModal');
+const openCookiePolicyBtn = document.getElementById('openCookiePolicy'); // The link text
+const quickAcceptBtn = document.getElementById('quickAcceptCookie'); // The [OK] button
+const cookieAcceptBtn = document.getElementById('cookieAcceptBtn'); // Modal Accept
+const cookieCancelBtn = document.getElementById('cookieCancelBtn'); // Modal Cancel
+
+function checkCookieConsent() {
+    if (!localStorage.getItem('cookieConsent_v3')) {
+        // Show strip after delay
+        setTimeout(() => {
+            if (cookieStrip) cookieStrip.classList.remove('hidden-strip');
+        }, 2000);
+    }
+}
+
+function acceptAllCookies() {
+    localStorage.setItem('cookieConsent_v3', 'true');
+    if (cookieStrip) cookieStrip.classList.add('hidden-strip');
+    if (cookieModal) closePopup(cookieModal);
+}
+
+function closePopup(modal) {
+    modal.classList.remove('show-popup');
+    setTimeout(() => modal.classList.add('hidden-popup'), 500);
+}
+
+// Init Logic
+checkCookieConsent();
+
+// Event Listeners
+if (quickAcceptBtn) {
+    quickAcceptBtn.addEventListener('click', acceptAllCookies);
+}
+
+if (openCookiePolicyBtn) {
+    openCookiePolicyBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (cookieModal) {
+            cookieModal.classList.remove('hidden-popup');
+            cookieModal.classList.add('show-popup');
+        }
+    });
+}
+
+if (cookieAcceptBtn) {
+    cookieAcceptBtn.addEventListener('click', acceptAllCookies);
+}
+
+if (cookieCancelBtn) {
+    cookieCancelBtn.addEventListener('click', () => {
+        if (cookieModal) closePopup(cookieModal);
+        // Note: We don't save consent here, strip remains or re-appears on reload
+    });
+}
+
+// --- Privacy & Terms Logic ---
+// --- Privacy & Terms Logic ---
+const privacyModal = document.getElementById('privacyModal');
+const termsModal = document.getElementById('termsModal');
+const openPrivacyBtn = document.getElementById('openPrivacyModal');
+const openTermsBtn = document.getElementById('openTermsModal');
+const privacyCloseX = document.getElementById('privacyCloseX');
+const termsCloseX = document.getElementById('termsCloseX');
+
+if (openPrivacyBtn) {
+    openPrivacyBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (privacyModal) {
+            privacyModal.classList.remove('hidden-popup');
+            privacyModal.classList.add('show-popup');
+        }
+    });
+}
+
+if (openTermsBtn) {
+    openTermsBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (termsModal) {
+            termsModal.classList.remove('hidden-popup');
+            termsModal.classList.add('show-popup');
+        }
+    });
+}
+
+if (privacyCloseX) {
+    privacyCloseX.addEventListener('click', () => {
+        if (privacyModal) closePopup(privacyModal);
+    });
+}
+
+if (termsCloseX) {
+    termsCloseX.addEventListener('click', () => {
+        if (termsModal) closePopup(termsModal);
+    });
+}
+
+// --- Copyright & Date Cycle ---
+function animateCopyright() {
+    const copyrightEl = document.getElementById('copyrightFooter');
+    if (!copyrightEl) return;
+
+    // NOTE: CSS handles positioning (absolute, bottom right)
+    // We only toggle classes here.
+
+    const originalText = '© MATHEWS B / 2026 <i>V<b>2.2</b></i>';
+    let showDate = false;
+
+    setInterval(() => {
+        // 1. Trigger Light Sweep
+        copyrightEl.classList.add('sweep-active');
+
+        // 2. Fade Out Text slightly before change
+        setTimeout(() => {
+            copyrightEl.classList.add('copyright-sweep-out');
+        }, 100);
+
+        // 3. Change Text Mid-Sweep
+        setTimeout(() => {
+            if (showDate) {
+                copyrightEl.innerHTML = originalText;
+                copyrightEl.classList.remove('date-active'); // Enable Hover
+                showDate = false;
+            } else {
+                const now = new Date();
+                const dateStr = now.toLocaleDateString('en-GB', {
+                    day: 'numeric',
+                    month: 'short',
+                    year: 'numeric'
+                }).toUpperCase();
+                const timeStr = now.toLocaleTimeString('en-US', {
+                    hour12: true,
+                    hour: 'numeric',
+                    minute: 'numeric'
+                });
+                copyrightEl.innerHTML = `${dateStr} • ${timeStr}`;
+                copyrightEl.classList.add('date-active'); // Disable Hover
+                showDate = true;
+            }
+            // Fade In
+            copyrightEl.classList.remove('copyright-sweep-out');
+        }, 400);
+
+        // 4. Remove Sweep Class to reset
+        setTimeout(() => {
+            copyrightEl.classList.remove('sweep-active');
+        }, 1200);
+
+    }, 5000);
+}
+
+// Start Animation with a slight delay
+setTimeout(animateCopyright, 1000);

@@ -153,8 +153,9 @@
 .rockstar-logo {
     width: 120px;
     height: 120px;
-    /* Increased duration for walking effect */
-    animation: spider-walk-entry 2.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+    opacity: 0; /* Hidden initially during the delay */
+    /* Increased duration for walking effect + DELAY for Android Native Splash */
+    animation: spider-walk-entry 2.5s cubic-bezier(0.25, 1, 0.5, 1) 1.5s forwards;
     filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.5));
     border-radius: 4px;
     /* Added as per request for installed PC/Desktop */
