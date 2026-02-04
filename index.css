@@ -1,0 +1,121 @@
+/**
+ * FILE: index.css
+ * PURPOSE: Specialized animations for the Boot Screen & PWA Splash.
+ * 
+ * CONNECTED FILES:
+ * - index.html (IDs: #pwa-splash, #boot-screen)
+ * 
+ * SECTIONS:
+ * 1. PWA Splash (Neon Green Background + Rockstar Logo)
+ * 2. Web Boot Screen (Black Background + Radio Wave)
+ * 3. Keyframes (Animations definitions)
+ */
+
+/* --- PWA SPLASH (Neon Green) --- */
+
+#pwa-splash {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #33ca36;
+    z-index: 10000;
+    /* Above Boot Screen */
+    display: none;
+    /* Hidden by default */
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    transition: opacity 0.5s ease-out;
+}
+
+/* Show only in Installed App Mode */
+@media (display-mode: standalone) {
+    #pwa-splash {
+        display: flex;
+    }
+}
+
+/* --- WEB BOOT SCREEN (Radio Wave) --- */
+/* Restoring original styles inferred from context */
+#boot-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* Dark background for radio wave contrast */
+    background-color: #000;
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    transition: opacity 0.5s ease-out;
+}
+
+/* Radio Wave Animation */
+.radio-wave {
+    width: 100px;
+    height: 100px;
+    position: absolute;
+    border: 2px solid #00ff00;
+    /* Green Wave */
+    border-radius: 50%;
+    animation: wave 1.5s infinite ease-out;
+    opacity: 0;
+}
+
+@keyframes wave {
+    0% {
+        transform: scale(0.5);
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(2);
+        opacity: 0;
+    }
+}
+
+/* Preloader Icon Center */
+.preloader-icon {
+    width: 50px;
+    height: 50px;
+    z-index: 2;
+}
+
+
+/* --- COMEDY ROCKSTAR ANIMATION --- */
+@keyframes rockstar-entry {
+    0% {
+        transform: scale(0.5) rotate(-15deg);
+        opacity: 0;
+    }
+
+    40% {
+        transform: scale(1.2) rotate(10deg);
+        opacity: 1;
+    }
+
+    60% {
+        transform: scale(0.9) rotate(-5deg);
+    }
+
+    80% {
+        transform: scale(1.05) rotate(3deg);
+    }
+
+    100% {
+        transform: scale(1) rotate(0deg);
+    }
+}
+
+.rockstar-logo {
+    width: 120px;
+    /* Adjust size as needed */
+    height: 120px;
+    animation: rockstar-entry 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.5));
+}

@@ -1,0 +1,447 @@
+<!-- 
+    FILE: index.html
+    PURPOSE: Main entry point of the website (Single Page Application structure).
+    
+    CONNECTED FILES:
+    - CSS:
+        - style.css (Main Layout & Design)
+        - modal.css (Windows/Modals styling)
+        - index.css (PWA Splash & Boot Animations)
+    - JS:
+        - script.js (Main Logic, Navigation, UI Interactions)
+        - pwa-install.js (Handles App Installation Prompt)
+        - sw.js (Service Worker for Offline Mode)
+        - Updates/blog-data.js (Content Source for Blog)
+        - Updates/about-data.js (Content Source for About Section)
+        - Updates/scrolltxt-footer.js (Content for Footer Marquee)
+    - CONFIG:
+        - manifest.json (PWA Configuration)
+-->
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <title>ᴍᴀᴛʜᴇᴡꜱ ʙ - ᴄʀᴇᴀᴛɪᴠᴇ ɢᴇɴᴇʀᴀʟɪꜱᴛ</title>
+    <meta name="description"
+        content="Im Mathews B, a Creative Generalist, Product Designer, and Web Developer based in Kozhikode, Kerala, India. Specializing in UI/UX, Motion Graphics, and Interactive Storytelling. Passionate about media, animation, advertising, filmmaking, lighting, composition, music, and audio. Explore my portfolio for unrestricted design and development capabilities. I love, I create, I do.">
+    <meta name="keywords"
+        content="Mathews B, Mathews, Mathew, Mateo, MathewB, MathewsB, Mathews B Kerala, Mathews B India, Mathews B Kozhikode, Mathews B Calicut, Creative Designer Mathews, Web Developer Mathews, Product Designer Mathews, UI/UX Designer Mathews, Motion Graphics Mathews, Interactive Storytelling Mathews, Mathews B Portfolio, Best Creative Generalist, Best Designer in Kerala, Best Developer in Kerala, Independent Designer, Freelance Designer, Creative Technologist, Frontend Developer, Creative Coder, Media Professional, Animation Expert, Advertising Specialist, Filmmaker, Cinematographer, Video Editor, Lighting Artist, Composition Expert, Music Producer, Audio Engineer, Sound Designer, Storyteller, Visual Storyteller, Brand Identity Designer, Logo Designer, Graphic Designer, kzhikode, kozhikode, calicut, kalicut, kozikode, cozhikode, calicutt, mathews, mathews b, mathew, mathew b, mateo, mateo b, mathewb, mathewsb, mathws, mathw, mthws, mthw, mthews, mathewz, mathewz b, mathew s, mathew s b, mathews b, mathews b., mathews.b, mathews-b, mathews_b, mathew archery, archery mathew, mathews b archery, mathews archery bow, mathews compound bow, creativedesignermathews, creative designer mathews, mathews creative designer, designer mathews, mathews designer, web developer mathews, mathews web developer, developer mathews, mathews developer, product designer mathews, mathews product designer, eaddesigner, animation, advertising, filmmaking, lighting, composition, music, audio, 3D, 2D, VFX, premiere pro, after effects, blender, react, javascript, html, css, next.js, branding, logo, identity, strategy, social media, marketing, content creation, youtube, instagram, facebook, linkedin, twitter, design, art, creative, portfolio, website, web, app, mobile, responsive, fast, secure, seo, optimization, performance, accessibility, usability, user experience, user interface, interaction design, visual design, graphic design, motion design, sound design, game design, unity, unreal, godot, c#, c++, python, java, node, express, mongo, sql, database, backend, frontend, fullstack, devops, cloud, aws, azure, gcp, docker, kubernetes, git, github, gitlab, bitbucket, jira, trello, asana, slack, discord, zoom, meet, skype, teams, email, chat, voice, video, streaming, recording, editing, mixing, mastering, production, direction, script, storyboard, concept, character, environment, prop, vehicle, weapon, creature, monster, robot, alien, human, animal, plant, nature, city, space, sci-fi, fantasy, horror, comedy, drama, action, adventure, romance, thriller, mystery, crime, documentary, news, sport, education, tutorial, guide, review, blog, vlog, podcast, stream, live, event, show, concert, festival, exhibition, gallery, museum, library, school, college, university, institute, academy, course, class, lesson, workshop, seminar, webinar, conference, summit, forum, symposium, meetup, hackathon, jam, contest, competition, award, prize, medal, trophy, certificate, diploma, degree, master, phd, doctor, professor, teacher, student, learner, beginner, intermediate, advanced, expert, professional, master, guru, wizard, ninja, rockstar, legend, hero, idol, icon, star, celebrity, influencer, leader, manager, director, executive, founder, owner, partner, investor, sponsor, client, customer, user, fan, follower, subscriber, supporter, patron, donor, member, friend, colleague, peer, mentor, coach, trainer, guide, helper, assistant, associate, affiliate, partner, collaborator, co-founder, co-owner, co-director, co-producer, co-writer, co-editor, co-designer, co-developer, co-creator, team, group, crew, squad, unit, department, division, branch, office, hq, headquarters, center, hub, lab, studio, agency, firm, company, corporation, enterprise, organization, institution, foundation, association, federation, union, league, alliance, coalition, network, community, society, club, circle, collective, movement, campaign, initiative, project, program, plan, strategy, tactic, method, technique, process, workflow, detailed, minimal, clean, modern, sleek, futuristic, retro, vintage, classic, timeless, elegant, sophisticated, professional, playful, fun, quirky, unique, original, creative, innovative, experimental, cutting edge, trending, popular, famous, viral, awesome, amazing, cool, great, best, top, number one, #1, first, leader, pioneer, innovator, creator, maker, builder, hacker, coder, programmer, developer, engineer, scientist, researcher, analyst, strategist, consultant, advisor, mentor, coach, trainer, teacher, educator, figma, adobe xd, sketch, invision, zeplin, framer, proto.io, marvel, balsamig, axure, principle, origami, flinto, atomic, uxpin, webflow, wordpress, wix, squarespace, shopify, magento, bigcommerce, woocommerce, prestashop, opencart, zencart, oscommerce, drupal, joomla, ghost, medium, substack, tumblr, blogger, typepad, livejournal, weebly, jimdo, strike, strikingly, duda, tilda, readymag, cargo, format, carbon, Dunked, adobe portfolio, behance, dribbble, artstation, deviantart, 500px, flickr, vimeo, soundcloud, bandcamp, spotify, apple music, tidal, deezer, amazon music, google play, youtube music, pandora, iheartradio, tunein, mixcloud, hearthis, audiomack, reverbnation, jamendo, magnatune, cc, creative commons, royalty free, stock, footage, image, photo, video, audio, music, sfx, sound effect, loop, sample, preset, plugin, extension, addon, script, code, library, framework, api, sdk, ide, editor, terminal, console, command line, shell, bash, zsh, powershell, git bash, wsl, linux, mac, windows, android, ios, iphone, ipad, tablet, desktop, laptop, server, hosting, domain, dns, cdn, ssl, tls, https, http, ftp, ssh, scp, rsync, telnet, smtp, pop3, imap, dns, dhcp, tcp, udp, ip, ipv4, ipv6, mac address, subnet, gateway, router, switch, hub, modem, firewall, vpn, proxy, nat, port forwarding, dmz, lan, wan, wlan, vlan, man, pan, san, can, gan, internet, intranet, extranet, darknet, deep web, surface web, world wide web, www, w3c, ietf, rfc, iso, ansi, ieee, nist, gdpr, ccpa, hipaa, pci dss, soc2, ferpa, coppa, glba, fisma, sox, basel, solvency, mifid, psd2, pcidss, ul, ce, rohs, weee, fcc, ccc, kcc, bis, tisi, nom, eac, saso, gmark, rcm, ick, sabers, inmetro, anatel, ntc, ncra, mcit, tra, citc, cra, tra, ntra, ict, mpt, mcit, mdd/mdr, ivdd/ivdr, aimdd, ped, atex, lvd, emc, red, r&tte, mid, nawi, gads, gar, tped, cpr, ppe, regulation, directive, standard, norm, certification, compliance, audit, inspection, testing, validation, verification, qa, qc, qms, iso 9001, iso 14001, iso 45001, iso 27001, iso 22301, iso 20000, iso 50001, iso 31000, iso 26000, sa 8000, fsc, pefc, msc, asc, rspo, rain forest alliance, fair trade, organic, vegan, cruelty free, gluten free, non gmo, halal, kosher, parve, keto, paleo, atkins, whole30, dash, mind, tlc, volumetrics, ww, weight watchers, noom, jenny craig, nutrisystem, medifast, optavia, south beach, zone, macrobiotic, raw, fruitarian, pescatarian, flexitarian, vegetarian">
+    <meta name="author" content="Mathews B">
+    <meta name="robots" content="index, follow">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#33ca36">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://mathewsb.in/">
+    <meta property="og:title" content="ᴘᴏʀᴛꜰᴏʟɪᴏ - ᴍᴀᴛʜᴇᴡꜱ ʙ">
+    <meta property="og:description"
+        content="Im Mathews B, a Creative Generalist, Product Designer, and Web Developer based in Kozhikode, Kerala, India. Specializing in UI/UX, Motion Graphics, and Interactive Storytelling. Passionate about media, animation, advertising, filmmaking, lighting, composition, music, and audio. Explore my portfolio for unrestricted design and development capabilities. I love, I create, I do.">
+    <meta property="og:image" content="https://mathewsb.in/Images/me.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://www.mathewsb.in/">
+    <meta property="twitter:title" content="ᴘᴏʀᴛꜰᴏʟɪᴏ - ᴍᴀᴛʜᴇᴡꜱ ʙ">
+    <meta property="twitter:description"
+        content="Im Mathews B, a Creative Generalist, Product Designer, and Web Developer based in Kozhikode, Kerala, India. Specializing in UI/UX, Motion Graphics, and Interactive Storytelling. Passionate about media, animation, advertising, filmmaking, lighting, composition, music, and audio. Explore my portfolio for unrestricted design and development capabilities. I love, I create, I do.">
+    <meta property="twitter:image" content="https://mathewsb.in/Images/me.png">
+
+    <link rel="icon" type="image/svg+xml" href="Images/browser-icon.png">
+    <link rel="apple-touch-icon" href="Images/app-icon.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Mathews B">
+    <link rel="manifest" href="manifest.json">
+    <!-- Importing Arimo Font with all styles -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400..700;1,400..700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="modal.css">
+
+    <link rel="canonical" href="https://www.mathewsb.in/">
+
+    <!-- JSON-LD Structured Data for Author/Person -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Mathews B",
+      "url": "https://www.mathewsb.in",
+      "sameAs": [
+        "https://www.linkedin.com/in/mathews-b-designer",
+        "https://linktr.ee/mathewsb"
+      ],
+      "jobTitle": "Creative Designer & Developer",
+      "email": "hello@mathewsb.in",
+      "description": "Im Mathews B, a Creative Generalist, Product Designer, and Web Developer based in Kozhikode, Kerala, India. Specializing in UI/UX, Motion Graphics, and Interactive Storytelling. Passionate about media, animation, advertising, filmmaking, lighting, composition, music, and audio. Explore my portfolio for unrestricted design and development capabilities. I love, I create, I do.",
+      "knowsAbout": [
+        "UI/UX Design",
+        "Web Development",
+        "front-end development",
+        "Creative Direction",
+        "Motion Graphics",
+        "Interactive Storytelling",
+        "Product Design",
+        "Filmmaking",
+        "Sound Engineering",
+        "Advertising"
+      ]
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Mathews B Portfolio",
+        "url": "https://www.mathewsb.in",
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": "https://www.mathewsb.in/?q={search_term_string}",
+          "query-input": "required name=search_term_string"
+        }
+    }
+    </script>
+</head>
+
+<body>
+
+
+
+
+
+
+    <img class="mb" src="Images/me.png" alt="Mathews B - Creative Designer Portfolio">
+
+    <!-- Main Container to center everything -->
+    <div class="main-container">
+
+        <!-- The Portfolio Card/Device Frame -->
+        <div class="device-frame">
+            <!-- Meteor Border Animation -->
+            <span class="meteor-line top"></span>
+            <span class="meteor-line right"></span>
+            <span class="meteor-line bottom"></span>
+            <span class="meteor-line left"></span>
+
+            <!-- Side Controls (Resume + Home) -->
+            <div class="side-controls">
+                <!-- Home Button (Hidden on Home) -->
+                <a href="index.html" id="homeBtn" class="home-btn">
+                    <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2 2z"></path>
+                        <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                    </svg>
+                </a>
+
+                <!-- Resume Link -->
+                <a href="Images/pdf/mathews_b.pdf" class="resume-link" target="_blank">
+                    <span class="resume-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="7 10 12 15 17 10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                        </svg>
+                    </span>
+                    <span class="resume-text">RESUME</span>
+                </a>
+
+            </div>
+
+            <!-- Boot/Preloader Screen -->
+            <!-- PWA SPLASH SCREEN (Only visible in Standalone App) -->
+            <div id="pwa-splash">
+                <img src="Images/favicon.svg" alt="Loading..." class="rockstar-logo">
+            </div>
+
+            <!-- WEB BOOT SCREEN (Radio Wave) -->
+            <div id="boot-screen">
+                <div class="radio-wave"></div>
+                <img src="Images/favicon.svg" alt="Loading..." class="preloader-icon">
+            </div>
+
+            <!-- Top Navigation Bar -->
+            <header class="top-bar">
+                <div class="nav-controls">
+                    <button class="nav-btn" id="prevBtn">&lt;</button>
+                    <button class="nav-btn" id="nextBtn">&gt;</button>
+                </div>
+                <div class="header-right-group">
+                    <span class="page-name fade-element" id="pageNameDisplay">HOME</span>
+                    <div class="top-right-icon" id="iconContainer">
+                        <span>[ <span class="icon-display fade-element"></span> ]</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Main Content Area -->
+            <!-- Comments: Content changes here using JS as per "SAME PAGE ITSELF" requirement -->
+
+            <main class="content-area" id="mainContent">
+                <div class="background-overlay"></div>
+
+                <!-- HOME View Content -->
+                <div id="home-view" class="view-section active-view">
+                    <div class="hero-text">
+                        <h1>
+                            <span class="char c1">U</span><span class="char c2">N</span>
+                            <span class="reversed char-r-anim">R</span>
+                            <span class="char c3">E</span><span class="char c4">S</span><span
+                                class="char c5">T</span><span class="char c6">R</span><span
+                                class="char c7">I</span><span class="char c8">C</span><span
+                                class="char c9">T</span><span class="char c10">E</span><span class="char c11">D</span>
+                            <span class="green-text">
+                                <span class="char c12">A</span><span class="char c13">R</span><span
+                                    class="char c14">E</span><span class="char c15">A</span>
+                            </span>
+                        </h1>
+                    </div>
+                </div>
+                <!-- Placeholder for the person image/texture, now GLOBAL for all pages -->
+                <div class="hero-image-placeholder"></div>
+
+                <!-- DYNAMIC View Content (About, Projects, Blog, Contact) -->
+                <div id="dynamic-content-container" class="view-section hidden-view">
+                    <!-- JS will inject content here -->
+                </div>
+            </main>
+
+            <!-- Advanced Audio Player -->
+            <div class="centered-audio-player">
+                <!-- Row 1: Animated Text (SVG Mask Scan) -->
+                <div class="now-playing-container">
+                    <svg width="300" height="30" viewBox="0 0 300 30" class="now-playing-svg">
+                        <defs>
+                            <!-- Mask Definition -->
+                            <mask id="textMask">
+                                <rect x="0" y="0" width="100%" height="100%" fill="black" class="mask-rect" />
+                            </mask>
+                        </defs>
+                        <!-- Text Layer -->
+                        <!-- White color, Semi-Bold (600), Masked -->
+                        <text x="50%" y="20" text-anchor="middle" class="now-playing-text"
+                            mask="url(#textMask)">INITIALIZING...</text>
+                    </svg>
+                </div>
+
+                <!-- Row 2: Controls -->
+                <div class="audio-controls-row">
+                    <!-- Online/Offline Toggle -->
+                    <button id="modeToggleBtn" class="player-btn control-icon" aria-label="Switch Mode">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="feather feather-globe">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="2" y1="12" x2="22" y2="12"></line>
+                            <path
+                                d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z">
+                            </path>
+                        </svg>
+                    </button>
+
+                    <!-- Prev -->
+                    <button id="prevTrackBtn" class="player-btn control-icon">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="19 20 9 12 19 4 19 20"></polygon>
+                            <line x1="5" y1="19" x2="5" y2="5"></line>
+                        </svg>
+                    </button>
+
+                    <!-- Play/Pause -->
+                    <button id="playPauseBtn" class="player-btn control-icon main-play-btn">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                        </svg>
+                    </button>
+
+                    <!-- Next -->
+                    <button id="nextTrackBtn" class="player-btn control-icon">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="5 4 15 12 5 20 5 4"></polygon>
+                            <line x1="19" y1="5" x2="19" y2="19"></line>
+                        </svg>
+                    </button>
+
+                    <!-- Volume & Mute -->
+                    <div class="vol-group-always-visible">
+                        <input type="range" id="volumeSlider" class="volume-slider" min="0" max="1" step="0.1"
+                            value="0.5">
+                        <button id="muteBtn" class="player-btn control-icon">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                                <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Music Disclaimer -->
+                <div class="audio-disclaimer">
+                    <span style='background: black; color: #00ff00; padding: 0 5px;'><b>Disclaimer:</b></span><br> Local
+                    music added and playing songs due to copyright issue, it is added
+                    as<br>entertainment purpose only. For any queries <a href="mailto:hello@mathewsb.in"
+                        target="_blank"><i>mail to: hello@mathewsb.in</i></a>
+                </div>
+            </div>
+
+
+            <!-- Taskbar Wrapper -->
+            <div id="taskbarGroup" class="taskbar-group">
+                <!-- Taskbar Container (Moved Above Footer) -->
+                <div id="taskbarContainer" class="taskbar-container">
+                    <!-- Items injected via JS -->
+                </div>
+
+                <!-- Close All Button (Below Taskbar) -->
+                <button id="closeAllTaskbarBtn" class="close-all-taskbar-btn" title="Close All">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Bottom Info Bar -->
+            <footer class="bottom-bar">
+                <div class="logo-container" onclick="location.reload()">
+                    <div class="shatter-wrapper">
+                        <img src="Images/logo.svg" class="logo-shard s1" alt="MATHEWS">
+                        <img src="Images/logo.svg" class="logo-shard s2" alt="MATHEWS">
+                        <img src="Images/logo.svg" class="logo-shard s3" alt="MATHEWS">
+                    </div>
+                </div>
+
+                <!-- Taskbar Container REMOVED from here -->
+
+                <div class="status-box">
+                    <div class="scrolling-content">
+                        <span class="scrolling-text-item">LOADING...</span>
+                        <!-- Duplicate content for seamless loop -->
+                        <span class="scrolling-text-item">LOADING...</span>
+                    </div>
+                </div>
+            </footer>
+
+            <!-- Google Drive Modal (Hidden by default) -->
+            <div id="driveModal" class="drive-modal-overlay">
+                <div class="drive-modal-container">
+                    <!-- Window Controls -->
+                    <div class="window-controls">
+                        <button id="minimizeDriveBtn" class="window-btn minimize-btn" aria-label="Minimize">
+                            <span class="minimize-icon">_</span>
+                        </button>
+                        <button id="closeDriveBtn" class="window-btn close-drive-btn" aria-label="Close">
+                            <span class="close-icon-x">X</span>
+                        </button>
+                    </div>
+
+                    <!-- Drive Content (White Border) -->
+                    <div class="drive-content-wrapper">
+                        <iframe id="driveFrame" class="drive-iframe" frameborder="0"></iframe>
+                    </div>
+
+                    <!-- Logo Area Removed as per user request -->
+                </div>
+            </div>
+
+            <!-- Contact Google Form Modal (Reusing Drive Styles) -->
+            <div id="contactModal" class="drive-modal-overlay">
+                <div class="drive-modal-container">
+                    <!-- Window Controls -->
+                    <div class="window-controls">
+                        <button id="minimizeContactBtn" class="window-btn minimize-btn" aria-label="Minimize">
+                            <span class="minimize-icon">_</span>
+                        </button>
+                        <button id="closeContactBtn" class="window-btn close-drive-btn" aria-label="Close">
+                            <span class="close-icon-x">X</span>
+                        </button>
+                    </div>
+
+                    <!-- Form Content -->
+                    <div class="drive-content-wrapper">
+                        <iframe id="contactFrame" class="drive-iframe" frameborder="0"></iframe>
+                    </div>
+                </div>
+            </div>
+
+            <!-- © MATHEWS B COPYRIGHT -->
+            <a href="https://wa.me/919048766901?text=Hi%2C%20I%20saw%20your%20portfolio.%20I%20want%20to%20discuss%20a%20project."
+                target="_blank" class="copyright-footer"><i>© MATHEWS B / 2026</i></a>
+
+            <!-- POPUP AD BOX -->
+            <div id="popupAd" class="popup-overlay hidden-popup">
+                <div class="popup-box">
+                    <!-- Window Controls -->
+                    <div class="window-controls">
+                        <button id="closePopupBtn" class="window-btn close-drive-btn"><span
+                                class="close-icon-x">X</span></button>
+                    </div>
+
+                    <!-- Content Wrapper -->
+                    <div class="popup-content-wrapper">
+                        <!-- 1:1 IMAGE HREF -->
+                        <a href="https://google.com" target="_blank" class="popup-image-link">
+                            <img src="Images/me.png" alt="Ad" class="popup-image-content">
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+
+    <audio id="bg-audio" src="https://stream.nightride.fm/nightride.mp3"></audio>
+
+    <!-- Load Data Files -->
+    <script src="Updates/blog-data.js"></script>
+    <script src="Updates/about-data.js"></script>
+    <script src="Updates/scrolltxt-footer.js"></script>
+    <script src="script.js"></script>
+
+    <!-- Custom Blog Modal -->
+    <div id="blogModal" class="drive-modal-overlay">
+        <div class="drive-modal-container" id="blogModalContainer">
+            <!-- Window Controls -->
+            <div class="window-controls">
+                <button id="minimizeBlogBtn" class="window-btn minimize-btn" aria-label="Minimize">
+                    <span class="minimize-icon">_</span>
+                </button>
+                <button id="closeBlogBtn" class="window-btn close-drive-btn" aria-label="Close">
+                    <span class="close-icon-x">X</span>
+                </button>
+            </div>
+
+
+
+            <!-- Floating Scroll-to-Top Button -->
+            <button id="blogScrollTopBtn" title="Back to Top">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="18 15 12 9 6 15"></polyline>
+                </svg>
+            </button>
+
+            <!-- Blog Detail Content (Injected by JS) -->
+            <div class="drive-content-wrapper blog-detail-wrapper" id="blogContentArea">
+                <!-- Content goes here -->
+            </div>
+        </div>
+    </div>
+    <!-- Service Worker Registration for PWA -->
+    <!-- PWA Installation Handler -->
+    <script src="pwa-install.js"></script>
+</body>
+
+</html>
