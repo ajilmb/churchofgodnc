@@ -2271,37 +2271,63 @@ document.addEventListener('DOMContentLoaded', () => {
     let touchStartX = 0;
     let touchEndX = 0;
     let touchStartY = 0;
+    let isSwiping = false; // Flag to track if the gesture is a swipe
 
     document.addEventListener('touchstart', (e) => {
         touchStartX = e.changedTouches[0].screenX;
         touchStartY = e.changedTouches[0].screenY;
+        isSwiping = false; // Reset
+    }, { passive: false });
+
+    document.addEventListener('touchmove', (e) => {
+        const touchX = e.changedTouches[0].screenX;
+        const touchY = e.changedTouches[0].screenY;
+
+        // Check if moved enough to be considered a swipe/scroll intent, not a tap
+        if (Math.abs(touchX - touchStartX) > 10 || Math.abs(touchY - touchStartY) > 10) {
+            isSwiping = true;
+        }
     }, { passive: false });
 
     document.addEventListener('touchend', (e) => {
+        if (!isSwiping) return; // If it was just a tap (little movement), don't treat as swipe nav
+
         touchEndX = e.changedTouches[0].screenX;
         const touchEndY = e.changedTouches[0].screenY;
-        handleSwipeGesture(touchEndY);
+        handleSwipeGesture(touchEndX, touchEndY);
+
+        // Reset after a short delay to ensure click blocking works
+        setTimeout(() => { isSwiping = false; }, 100);
     }, { passive: false });
 
-    function handleSwipeGesture(touchEndY) {
-        // 1. Safety Checks
-        // If Vibe Game is playing, don't swipe navigate (Game uses swipe/touch controls)
-        if (pages[currentPageIndex].id === 'vibe' && typeof gameState !== 'undefined' && gameState === 'PLAYING') return;
+    // Block accidental clicks if we were swiping
+    document.addEventListener('click', (e) => {
+        if (isSwiping) {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log("Click blocked due to swipe");
+        }
+    }, true); // Capture phase to intercept early
 
-        // If inside a scrollable container (like Blog content), be careful.
-        // But main navigation is horizontal swipe, usually distinct from vertical scroll.
-        // Let's ensure it's a MAINLY HORIZONTAL swipe.
+    function handleSwipeGesture(touchEndX, touchEndY) {
+        // 1. Safety Checks
+        // If Vibe Game is playing, don't swipe navigate
+        if (pages[currentPageIndex].id === 'vibe' && typeof gameState !== 'undefined' && gameState === 'PLAYING') return;
 
         const deltaX = touchEndX - touchStartX;
         const deltaY = touchEndY - touchStartY;
 
-        // Thresholds
-        const MIN_SWIPE_DISTANCE = 50;
-        const MAX_VERTICAL_DEVIATION = 50; // Don't trigger if user is scrolling down
+        // Refined Thresholds for "Smoother" feel
+        const MIN_SWIPE_DISTANCE = 30; // Reduced from 50 (More sensitive)
+        const MAX_VERTICAL_DEVIATION = 75; // Increased from 50 (More forgiving of diagonal)
 
+        // Ensure it's a horizontal-ish swipe
         if (Math.abs(deltaX) > MIN_SWIPE_DISTANCE && Math.abs(deltaY) < MAX_VERTICAL_DEVIATION) {
+            // Extra check: If vertical scroll was significant relative to horizontal, maybe ignore?
+            // But simpler is often better.
+
             if (deltaX < 0) {
-                // Swiped Left -> Go Next
+                // Swiped Left -> Go Next (finger moves left, content moves left)
                 handleNavigation('next');
             } else {
                 // Swiped Right -> Go Prev
