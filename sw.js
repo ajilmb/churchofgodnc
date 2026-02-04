@@ -9,12 +9,13 @@
  * NOTE: Update `CACHE_NAME` (v1 -> v2) to force users to download new code.
  */
 
-const CACHE_NAME = 'mathews-b-portfolio-v12';
+const CACHE_NAME = 'mathews-b-portfolio-v13';
 
 const ASSETS = [
     './',
     './index.html',
     './style.css',
+    './index.css',
     './modal.css',
     './script.js',
     './pwa-install.js',

@@ -18,7 +18,8 @@
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%;
+    height: 100vh;
+    height: 100dvh;
     background-color: #33ca36;
     z-index: 10000;
     /* Above Boot Screen */
@@ -155,4 +156,6 @@
     /* Increased duration for walking effect */
     animation: spider-walk-entry 2.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
     filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.5));
+    border-radius: 4px;
+    /* Added as per request for installed PC/Desktop */
 }

@@ -41,6 +41,7 @@
     height: 88%;
     /* Increased from 85% */
     max-height: 95vh;
+    max-height: 95dvh;
     /* Increased from 800px to allow full screen scaling */
 
     display: flex;
@@ -95,8 +96,10 @@
         /* Updated Dimensions for Desktop/General */
         width: 55%;
         height: 85vh !important;
+        height: 85dvh !important;
         /* Increased from 70% */
         max-height: 85vh !important;
+        max-height: 85dvh !important;
     }
 }
 
@@ -230,7 +233,9 @@
 .blog-detail-hero {
     width: 100%;
     /* Strict User Rules + Height Fix */
+    /* Strict User Rules + Height Fix */
     min-height: 90vh;
+    min-height: 90dvh;
     padding-top: 10px;
     /* Removed large padding-bottom as overlay is now absolute */
     padding-bottom: 40px;
@@ -768,7 +773,9 @@
         position: relative;
         /* Adjusted for Work/Contact: Fixed usable height (70vh) to avoid squeezing */
         height: 55vh !important;
+        height: 55dvh !important;
         max-height: 85vh !important;
+        max-height: 85dvh !important;
         width: 96%;
         margin: 0 auto;
         display: flex;
@@ -778,7 +785,9 @@
     /* BLOG SPECIFIC: Needs fixed tall height for internal scrolling */
     #blogModalContainer {
         height: 85vh !important;
+        height: 85dvh !important;
         max-height: 85vh !important;
+        max-height: 85dvh !important;
     }
 
     .drive-modal-overlay.active .drive-modal-container {

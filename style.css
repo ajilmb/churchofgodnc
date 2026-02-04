@@ -86,7 +86,11 @@ body {
     /* Updated Font */
     background-color: var(--dark-bg);
     color: var(--primary-green);
+    color: var(--primary-green);
     height: 100vh;
+    /* Fallback for older browsers */
+    height: 100dvh;
+    /* Dynamic Viewport Height for Mobile */
     overflow: hidden;
     /* Prevent body scroll, custom scroll inside if needed */
     display: flex;

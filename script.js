@@ -2035,7 +2035,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Dynamic Meta Tags ---
     function updatePageMetadata(pageId, extraData = null) {
-        const baseTitle = "Mathews B - Creative Generalist";
+        // Standardized App Name for Title Matching
+        const baseTitle = "Mathews B";
         let title = baseTitle;
         let description = "Portfolio of Mathews B - Creative Designer, Product Designer, and Web Developer.";
 
@@ -2045,7 +2046,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 description = "Im Mathews B, a Creative Generalist, Product Designer, and Web Developer based in Kozhikode, Kerala, India. Specializing in UI/UX, Motion Graphics, and Interactive Storytelling.";
                 break;
             case 'about':
-                title = "About Me - Mathews B";
+                title = "Mathews B - About Me";
                 if (typeof ABOUT_DATA !== 'undefined' && ABOUT_DATA.paragraphs) {
                     const tempDiv = document.createElement("div");
                     tempDiv.innerHTML = ABOUT_DATA.paragraphs[0];
@@ -2053,24 +2054,24 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 break;
             case 'works':
-                title = "Selected Works - Mathews B";
+                title = "Mathews B - Selected Works";
                 description = "Explore the selected works and projects of Mathews B, showcasing UI/UX design, motion graphics, and creative development.";
                 break;
             case 'vibe':
-                title = "Vibe Zone - Mathews B";
+                title = "Mathews B - Vibe Zone";
                 description = "Experience the Vibe Zone. A place for interactive experiments and gaming.";
                 break;
             case 'contact':
-                title = "Contact Me - Mathews B";
+                title = "Mathews B - Contact Me";
                 description = "Get in touch with Mathews B for freelance opportunities, collaborations, or just to say hello. Based in Kozhikode, Kerala.";
                 break;
             case 'blog':
-                title = "Blog - Mathews B";
+                title = "Mathews B - Blog";
                 description = "Read the latest thoughts, tutorials, and updates from Mathews B on Design, Technology, and Creativity.";
                 if (extraData && extraData.id) {
                     const post = BLOG_DATA.find(p => p.id == extraData.id);
                     if (post) {
-                        title = `${post.title} - Mathews B Blog`;
+                        title = `Mathews B - ${post.title}`;
                         description = post.preview;
                     }
                 }
