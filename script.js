@@ -19,17 +19,21 @@
 // Implements the "Same page itself everything happens" logic with Dynamic JSON Loading
 
 document.addEventListener('DOMContentLoaded', () => {
-    const prevBtn = document.getElementById('prevBtn');
-    const nextBtn = document.getElementById('nextBtn');
+    const navLeftBtn = document.getElementById('navLeftBtn');
+    const navRightBtn = document.getElementById('navRightBtn');
+    const navDropdown = document.getElementById('navDropdown');
     const mainContent = document.getElementById('mainContent');
 
     // Views
-    const homeView = document.getElementById('home-view');
-    const dynamicContainer = document.getElementById('dynamic-content-container');
+    window.homeView = document.getElementById('home-view');
+    window.dynamicContainer = document.getElementById('dynamic-content-container');
+    window.dynamicContainer = document.getElementById('dynamic-content-container');
     const mbImage = document.querySelector('.mb'); // The person image
+    const bootScreen = document.getElementById('boot-screen');
+    const deviceFrame = document.querySelector('.device-frame');
 
     // Navigation Data
-    const pages = [
+    window.pages = [
         {
             id: 'home',
             title: 'UN <span class="reversed">R</span>ESTRICTED <span class="green-text">AREA</span>',
@@ -69,7 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     ];
 
-    let currentPageIndex = 0;
+    window.currentPageIndex = 0;
 
     // UI Elements
     // Fixed: 'iconContainer' now refers to the WRAPPER (div) for animation
@@ -78,8 +82,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const iconDisplaySpan = document.querySelector('.icon-display');
 
     const pageNameDisplay = document.getElementById('pageNameDisplay');
-    const bootScreen = document.getElementById('boot-screen');
-    const deviceFrame = document.querySelector('.device-frame');
+    // --- Boot Screen Elements ---
+    // (Already declared above)
     const homeBtn = document.getElementById('homeBtn');
 
     // --- Google Drive Modal Elements ---
@@ -488,7 +492,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- View Controller ---
 
-    function updateContent() {
+    window.updateContent = function () {
         const page = pages[currentPageIndex];
         const audioPlayerContainer = document.querySelector('.centered-audio-player');
 
@@ -585,7 +589,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- Unified Transition Helper ---
-    function transitionView(updateCallback) {
+    window.transitionView = function (updateCallback) {
         // 1. Fade Out Current View
         // Find the currently active view (Home or Dynamic)
         const currentActive = document.querySelector('.active-view');
@@ -712,8 +716,259 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Event Listeners ---
 
-    if (nextBtn) nextBtn.addEventListener('click', () => handleNavigation('next'));
-    if (prevBtn) prevBtn.addEventListener('click', () => handleNavigation('prev'));
+    // --- Navigation & Dropdown Logic ---
+
+    // State to track loop phase: 0 = Classic (< >), 1 = Modern (> ≡)
+    let loopState = 0;
+    // State to track if buttons have morphed to Modern Mode
+    let isModernNavActive = false;
+
+    // Initial Listeners (Classic Mode: Prev/Next)
+    if (navLeftBtn) {
+        navLeftBtn.addEventListener('click', (e) => {
+            if (isModernNavActive) {
+                // Modern Mode: Left Button is NEXT
+                handleNavigation('next');
+            } else {
+                // Classic Mode: Left Button is PREV
+                handleNavigation('prev');
+            }
+        });
+    }
+
+    if (navRightBtn) {
+        navRightBtn.addEventListener('click', (e) => {
+            if (isModernNavActive) {
+                // Modern Mode: Right Button is MENU
+                e.stopPropagation();
+                toggleDropdown();
+            } else {
+                // Classic Mode: Right Button is NEXT
+                handleNavigation('next');
+            }
+        });
+    }
+
+    // Close Dropdown on outside click
+    document.addEventListener('click', (e) => {
+        if (navDropdown && !navDropdown.classList.contains('hidden-dropdown') && !navRightBtn.contains(e.target) && !navDropdown.contains(e.target)) {
+            closeDropdown();
+        }
+    });
+
+    let buttonLoopInterval; // Control variable for the loop
+
+    function toggleDropdown() {
+        if (!navDropdown) return;
+        if (navDropdown.classList.contains('hidden-dropdown')) {
+            openDropdown();
+        } else {
+            closeDropdown();
+        }
+    }
+
+    function openDropdown() {
+        renderDropdown();
+        navDropdown.classList.remove('hidden-dropdown');
+
+        // STOP Loop
+        stopButtonLoop();
+
+        // Change Hamburger to Close Icon (X) AND Left to Previous (<)
+        // fade out old
+        const rightContent = navRightBtn.querySelector('.btn-content');
+        const leftContent = navLeftBtn.querySelector('.btn-content');
+
+        if (rightContent) rightContent.classList.add('fading-out');
+        if (leftContent) leftContent.classList.add('fading-out');
+
+        setTimeout(() => {
+            // Set Right to Close (X)
+            navRightBtn.innerHTML = `
+                <span class="btn-content fading-in">
+                    <svg class="close-nav-icon" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </span>`;
+
+            // Set Left to Previous (<)
+            navLeftBtn.innerHTML = `<span class="btn-content fading-in">&lt;</span>`;
+
+            // Trigger fade in
+            requestAnimationFrame(() => {
+                const newRight = navRightBtn.querySelector('.btn-content');
+                const newLeft = navLeftBtn.querySelector('.btn-content');
+
+                if (newRight) newRight.classList.remove('fading-in');
+                if (newLeft) newLeft.classList.remove('fading-in');
+            });
+        }, 200); // Short delay for fade out
+    }
+
+    function closeDropdown() {
+        navDropdown.classList.add('hidden-dropdown');
+
+        // RESTART Loop immediately 
+        toggleNavState(); // Trigger immediate update (likely to state 0 or 1)
+        startButtonLoop();
+    }
+
+    function renderDropdown() {
+        navDropdown.innerHTML = '';
+        pages.forEach((page, index) => {
+            const item = document.createElement('a');
+            item.className = 'dropdown-item';
+
+            // Create container for Layout (Text Left, Icon Right)
+            const textSpan = document.createElement('span');
+            textSpan.textContent = page.headerTitle || page.title.replace(/<[^>]*>/g, '');
+
+            const iconSpan = document.createElement('span');
+            iconSpan.className = 'dropdown-icon';
+            iconSpan.innerHTML = page.icon; // Insert SVG from pages array
+
+            item.appendChild(textSpan);
+            item.appendChild(iconSpan);
+
+            item.onclick = (e) => {
+                e.preventDefault();
+                // Navigate to specific page
+                transitionView(() => {
+                    currentPageIndex = index;
+                    const pageId = pages[currentPageIndex].id;
+                    history.pushState({ page: pageId }, '', `?page=${pageId}`);
+                    updateContent();
+                    updatePageMetadata(pageId);
+                });
+                closeDropdown();
+            };
+            navDropdown.appendChild(item);
+        });
+    }
+
+    // --- Button Loop Logic ---
+    function toggleNavState() {
+        // Safety Fallback
+        if (typeof loopState === 'undefined' || isNaN(loopState)) loopState = 0;
+
+        // Cycle State: 0 -> 1 -> 0
+        const nextState = (loopState + 1) % 2;
+
+        // 1. Fade OUT current content
+        wrapButtonContent(navLeftBtn);
+        wrapButtonContent(navRightBtn);
+
+        const leftContent = navLeftBtn.querySelector('.btn-content');
+        const rightContent = navRightBtn.querySelector('.btn-content');
+
+        if (leftContent) leftContent.classList.add('fading-out');
+        if (rightContent) rightContent.classList.add('fading-out');
+
+        // 2. Wait for Fade Out (500ms) - Smoother Transition
+        setTimeout(() => {
+            console.log(`Loop Transitioning to State: ${nextState}`);
+            // 3. Swap Content based on Next State
+            if (nextState === 1) {
+                // State 1: Modern (> ≡)
+                navLeftBtn.innerHTML = `<span class="btn-content fading-in">&gt;</span>`;
+                navRightBtn.innerHTML = `
+                    <span class="btn-content fading-in">
+                        <svg class="hamburger-icon" viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="3" y1="12" x2="21" y2="12"></line>
+                            <line x1="3" y1="6" x2="21" y2="6"></line>
+                            <line x1="3" y1="18" x2="21" y2="18"></line>
+                        </svg>
+                    </span>`;
+            } else {
+                // State 0: Classic (< >)
+                navLeftBtn.innerHTML = `<span class="btn-content fading-in">&lt;</span>`;
+                navRightBtn.innerHTML = `<span class="btn-content fading-in">&gt;</span>`;
+            }
+
+            // 4. Trigger Fade In
+            requestAnimationFrame(() => {
+                const newLeft = navLeftBtn.querySelector('.btn-content');
+                const newRight = navRightBtn.querySelector('.btn-content');
+
+                // Force reflow
+                void navLeftBtn.offsetWidth;
+
+                if (newLeft) newLeft.classList.remove('fading-in');
+                if (newRight) newRight.classList.remove('fading-in');
+            });
+
+            // 5. Update State
+            loopState = nextState;
+            isModernNavActive = (loopState !== 0); // Both 1 and 2 act as Modern for clicks
+
+        }, 400);
+    }
+
+    function wrapButtonContent(btn) {
+        if (!btn) return;
+        const currentHTML = btn.innerHTML;
+        // Avoid double wrapping if already wrapped (though innerHTML replacement resets it usually)
+        if (!btn.querySelector('.btn-content')) {
+            btn.innerHTML = `<span class="btn-content">${currentHTML}</span>`;
+        }
+    }
+
+    // --- Loop Control Helpers ---
+    function startButtonLoop() {
+        // Don't start if Dropdown is OPEN
+        if (navDropdown && !navDropdown.classList.contains('hidden-dropdown')) return;
+
+        // Clear existing to avoid duplicates
+        if (buttonLoopInterval) clearInterval(buttonLoopInterval);
+
+        console.log("Starting Button Loop...");
+        buttonLoopInterval = setInterval(toggleNavState, 4000);
+    }
+
+    function stopButtonLoop() {
+        if (buttonLoopInterval) clearInterval(buttonLoopInterval);
+        buttonLoopInterval = null;
+        console.log("Button Loop Paused");
+    }
+
+    // --- Independent Button Loop Logic ---
+    function initButtonLoop() {
+        // Run first toggle after short delay to allow boot/render
+        setTimeout(() => {
+            // First transition
+            toggleNavState();
+            // Start continuous loop
+            startButtonLoop();
+        }, 4500); // Standard wait for boot to settle, then start
+
+        // Add Pause-on-Hover / Touch Listeners
+        [navLeftBtn, navRightBtn].forEach(btn => {
+            if (!btn) return;
+
+            // Desktop Hover
+            btn.addEventListener('mouseenter', stopButtonLoop);
+            btn.addEventListener('mouseleave', startButtonLoop);
+
+            // Mobile/Touch Interaction
+            // Pause on touch start (e.g. while looking at it or about to click)
+            btn.addEventListener('touchstart', (e) => {
+                // Determine if we should stop. Yes, for stability.
+                stopButtonLoop();
+            }, { passive: true });
+
+            // Resume on touch end (unless click handler triggers something else)
+            btn.addEventListener('touchend', () => {
+                // Delay resume slightly in case of navigation, 
+                // but usually navigation will reload or dropdown will handle state
+                setTimeout(startButtonLoop, 500);
+            });
+        });
+    }
+
+    // Call Loop Init when script loads (it handles its own delay)
+    initButtonLoop();
+
 
     if (homeBtn) {
         homeBtn.addEventListener('click', (e) => {
@@ -742,31 +997,18 @@ document.addEventListener('DOMContentLoaded', () => {
     function playHeroEntry() {
         if (!mbImage) return;
 
-        // Reset Ghost
-        mbImage.classList.remove('animate-ghost');
-
-        // 0. Disable transition for instant reset
-        mbImage.style.transition = 'none';
-
-        // 1. Set Initial State via Class
-        mbImage.classList.add('slide-up-initial');
+        // Ensure display is block (in case it was hidden)
         mbImage.style.display = 'block';
-        mbImage.style.opacity = ''; // CLEAR INLINE OPACITY so CSS can take over
 
-        // 2. Force Browser Reflow (Commit the "Jump to Start" state)
+        // Force reflow to ensure display change is registered before class add
         void mbImage.offsetWidth;
 
-        // 3. Re-enable transitions (Clear inline override)
-        mbImage.style.transition = '';
+        // Trigger CSS Transition with a small delay to ensure browser paints first
+        setTimeout(() => {
+            mbImage.classList.add('hero-revealed');
+        }, 50);
 
-        // 4. Force another Reflow (Ensure browser knows transition is active again)
-        void mbImage.offsetWidth;
-
-        // 5. Trigger Animation (Slide Up)
-        mbImage.classList.remove('slide-up-initial');
-        mbImage.classList.add('hero-revealed'); // Reveal image from default hidden state
-
-        // Wait for fade-in (2s) to finish before ghosting - transition time is 2s (css)
+        // Ghost Effect Trigger
         setTimeout(() => {
             mbImage.classList.add('animate-ghost');
         }, 2000);
@@ -788,6 +1030,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 setTimeout(() => {
                     pwaSplash.style.display = 'none';
                     // NOW Start Standard Radio Wave Boot
+                    startStandardBoot(skipBoot);
                 }, 500);
             }, 4200); // 1.5s Delay + 2.5s Anim + Buffer
             return;
@@ -822,26 +1065,36 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         setTimeout(() => {
-            bootScreen.style.opacity = '0';
-            setTimeout(() => {
-                bootScreen.style.display = 'none';
-                if (deviceFrame) {
-                    deviceFrame.classList.add('glitch-blast');
+            bootScreen.style.display = 'none';
+            if (deviceFrame) {
+                deviceFrame.classList.add('glitch-blast');
+
+                // Trigger Intro Animations IMMEDIATELY (Meteors + Text Glitch)
+                if (deviceFrame) deviceFrame.classList.add('intro-finished');
+                document.body.classList.add('intro-finished');
+
+                setTimeout(() => {
+                    deviceFrame.classList.remove('glitch-blast');
+
+                    // DELAYED Hero Entry (Wait for animations to play a bit)
                     setTimeout(() => {
-                        deviceFrame.classList.remove('glitch-blast');
-                        // Show person on ALL pages
-                        // Show person on ALL pages
                         if (mbImage) {
-                            setTimeout(() => {
+                            // Reveal Hero Image
+                            if (typeof playHeroEntry === 'function') {
                                 playHeroEntry();
-                            }, 200); // Reduced delay for faster appearance
+                            } else {
+                                // Fallback
+                                mbImage.style.display = 'block';
+                                mbImage.classList.add('hero-revealed');
+                                mbImage.classList.add('slide-up-initial');
+                            }
                         }
-                        if (deviceFrame) deviceFrame.classList.add('intro-finished');
-                        document.body.classList.add('intro-finished');
-                    }, 500);
-                }
-            }, 500);
-        }, 2500);
+                    }, 2500); // 2.5s Delay for Image
+
+                }, 500);
+            }
+
+        }, 2000); // REDUCED: Fast Boot (was 4500)
     };
 
     // --- URL Routing ---
@@ -850,6 +1103,23 @@ document.addEventListener('DOMContentLoaded', () => {
         const pageParam = urlParams.get('page');
         const blogId = urlParams.get('blog'); // Legacy/Simple
         const idParam = urlParams.get('id'); // General ID
+        const actionParam = urlParams.get('action'); // ACTION HANDLER (For Widgets)
+
+        if (actionParam === 'play_music') {
+            // WIDGET ACTION: Fast Boot + Auto Play
+            runBootSequence(true); // Skip boot animation
+            setTimeout(() => {
+                if (bgAudio) {
+                    // Try to play (May be blocked by browser policy without interaction, 
+                    // but since it's an app launch, it often works)
+                    bgAudio.play().catch(e => {
+                        console.log("Auto-play blocked, waiting for interaction");
+                    });
+                    updatePlayerUI();
+                }
+            }, 500);
+            return true;
+        }
 
         if (pageParam) {
             const pageIndex = pages.findIndex(p => p.id === pageParam);
@@ -2033,7 +2303,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // --- Dynamic Meta Tags ---
-    function updatePageMetadata(pageId, extraData = null) {
+    window.updatePageMetadata = function (pageId, extraData = null) {
         // Standardized App Name for Title Matching
         const baseTitle = "Mathews B";
         let title = baseTitle;
@@ -2201,9 +2471,14 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         // Initial Status Check
-        if (mbImage.complete && mbImage.naturalWidth === 0) {
-            // If failed already
-            if (!navigator.onLine) enableSkeleton();
+        if (mbImage.complete) {
+            if (mbImage.naturalWidth === 0) {
+                // Failed/Broken
+                if (!navigator.onLine) enableSkeleton();
+            } else {
+                // Success/Cached - Reveal Immediately
+                disableSkeleton();
+            }
         }
 
         // Retry on Online
@@ -2321,159 +2596,227 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-});
 
-// --- COOKIE CONSENT LOGIC ---
-const cookieStrip = document.getElementById('cookieConsentStrip');
-const cookieModal = document.getElementById('cookiePolicyModal');
-const openCookiePolicyBtn = document.getElementById('openCookiePolicy'); // The link text
-const quickAcceptBtn = document.getElementById('quickAcceptCookie'); // The [OK] button
-const cookieAcceptBtn = document.getElementById('cookieAcceptBtn'); // Modal Accept
-const cookieCancelBtn = document.getElementById('cookieCancelBtn'); // Modal Cancel
 
-function checkCookieConsent() {
-    if (!localStorage.getItem('cookieConsent_v3')) {
-        // Show strip after delay
-        setTimeout(() => {
-            if (cookieStrip) cookieStrip.classList.remove('hidden-strip');
-        }, 2000);
+    // --- COOKIE CONSENT LOGIC ---
+    const cookieStrip = document.getElementById('cookieConsentStrip');
+    const cookieModal = document.getElementById('cookiePolicyModal');
+    const openCookiePolicyBtn = document.getElementById('openCookiePolicy'); // The link text
+    const quickAcceptBtn = document.getElementById('quickAcceptCookie'); // The [OK] button
+    const cookieAcceptBtn = document.getElementById('cookieAcceptBtn'); // Modal Accept
+    const cookieCancelBtn = document.getElementById('cookieCancelBtn'); // Modal Cancel
+
+    function checkCookieConsent() {
+        if (!localStorage.getItem('cookieConsent_v3')) {
+            // Show strip after delay
+            setTimeout(() => {
+                if (cookieStrip) cookieStrip.classList.remove('hidden-strip');
+            }, 2000);
+        }
     }
-}
 
-function acceptAllCookies() {
-    localStorage.setItem('cookieConsent_v3', 'true');
-    if (cookieStrip) cookieStrip.classList.add('hidden-strip');
-    if (cookieModal) closePopup(cookieModal);
-}
-
-function closePopup(modal) {
-    modal.classList.remove('show-popup');
-    setTimeout(() => modal.classList.add('hidden-popup'), 500);
-}
-
-// Init Logic
-checkCookieConsent();
-
-// Event Listeners
-if (quickAcceptBtn) {
-    quickAcceptBtn.addEventListener('click', acceptAllCookies);
-}
-
-if (openCookiePolicyBtn) {
-    openCookiePolicyBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        if (cookieModal) {
-            cookieModal.classList.remove('hidden-popup');
-            cookieModal.classList.add('show-popup');
-        }
-    });
-}
-
-if (cookieAcceptBtn) {
-    cookieAcceptBtn.addEventListener('click', acceptAllCookies);
-}
-
-if (cookieCancelBtn) {
-    cookieCancelBtn.addEventListener('click', () => {
+    function acceptAllCookies() {
+        localStorage.setItem('cookieConsent_v3', 'true');
+        if (cookieStrip) cookieStrip.classList.add('hidden-strip');
         if (cookieModal) closePopup(cookieModal);
-        // Note: We don't save consent here, strip remains or re-appears on reload
-    });
-}
+    }
 
-// --- Privacy & Terms Logic ---
-// --- Privacy & Terms Logic ---
-const privacyModal = document.getElementById('privacyModal');
-const termsModal = document.getElementById('termsModal');
-const openPrivacyBtn = document.getElementById('openPrivacyModal');
-const openTermsBtn = document.getElementById('openTermsModal');
-const privacyCloseX = document.getElementById('privacyCloseX');
-const termsCloseX = document.getElementById('termsCloseX');
+    function closePopup(modal) {
+        modal.classList.remove('show-popup');
+        setTimeout(() => modal.classList.add('hidden-popup'), 500);
+    }
 
-if (openPrivacyBtn) {
-    openPrivacyBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        if (privacyModal) {
-            privacyModal.classList.remove('hidden-popup');
-            privacyModal.classList.add('show-popup');
-        }
-    });
-}
+    // Init Logic
+    checkCookieConsent();
 
-if (openTermsBtn) {
-    openTermsBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        if (termsModal) {
-            termsModal.classList.remove('hidden-popup');
-            termsModal.classList.add('show-popup');
-        }
-    });
-}
+    // Event Listeners
+    if (quickAcceptBtn) {
+        quickAcceptBtn.addEventListener('click', acceptAllCookies);
+    }
 
-if (privacyCloseX) {
-    privacyCloseX.addEventListener('click', () => {
-        if (privacyModal) closePopup(privacyModal);
-    });
-}
-
-if (termsCloseX) {
-    termsCloseX.addEventListener('click', () => {
-        if (termsModal) closePopup(termsModal);
-    });
-}
-
-// --- Copyright & Date Cycle ---
-function animateCopyright() {
-    const copyrightEl = document.getElementById('copyrightFooter');
-    if (!copyrightEl) return;
-
-    // NOTE: CSS handles positioning (absolute, bottom right)
-    // We only toggle classes here.
-
-    const originalText = '© MATHEWS B / 2026 <i>V<b>2.2</b></i>';
-    let showDate = false;
-
-    setInterval(() => {
-        // 1. Trigger Light Sweep
-        copyrightEl.classList.add('sweep-active');
-
-        // 2. Fade Out Text slightly before change
-        setTimeout(() => {
-            copyrightEl.classList.add('copyright-sweep-out');
-        }, 100);
-
-        // 3. Change Text Mid-Sweep
-        setTimeout(() => {
-            if (showDate) {
-                copyrightEl.innerHTML = originalText;
-                copyrightEl.classList.remove('date-active'); // Enable Hover
-                showDate = false;
-            } else {
-                const now = new Date();
-                const dateStr = now.toLocaleDateString('en-GB', {
-                    day: 'numeric',
-                    month: 'short',
-                    year: 'numeric'
-                }).toUpperCase();
-                const timeStr = now.toLocaleTimeString('en-US', {
-                    hour12: true,
-                    hour: 'numeric',
-                    minute: 'numeric'
-                });
-                copyrightEl.innerHTML = `${dateStr} • ${timeStr}`;
-                copyrightEl.classList.add('date-active'); // Disable Hover
-                showDate = true;
+    if (openCookiePolicyBtn) {
+        openCookiePolicyBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (cookieModal) {
+                cookieModal.classList.remove('hidden-popup');
+                cookieModal.classList.add('show-popup');
             }
-            // Fade In
-            copyrightEl.classList.remove('copyright-sweep-out');
-        }, 400);
+        });
+    }
 
-        // 4. Remove Sweep Class to reset
-        setTimeout(() => {
-            copyrightEl.classList.remove('sweep-active');
-        }, 1200);
+    if (cookieAcceptBtn) {
+        cookieAcceptBtn.addEventListener('click', acceptAllCookies);
+    }
 
-    }, 5000);
-}
+    if (cookieCancelBtn) {
+        cookieCancelBtn.addEventListener('click', () => {
+            if (cookieModal) closePopup(cookieModal);
 
-// Start Animation with a slight delay
-setTimeout(animateCopyright, 1000);
+            // User CANCELED:
+            // 1. Hide the strip immediately.
+            if (cookieStrip) cookieStrip.classList.add('hidden-strip');
+
+            // 2. SAVE this decision so it doesn't appear on refresh.
+            // User said: "NO NEED IN REFRESH TO SHOW".
+            localStorage.setItem('cookieConsent_v3', 'false');
+        });
+    }
+
+    // --- Privacy & Terms Logic ---
+    // --- Privacy & Terms Logic ---
+    const privacyModal = document.getElementById('privacyModal');
+    const termsModal = document.getElementById('termsModal');
+    const openPrivacyBtn = document.getElementById('openPrivacyModal');
+    const openTermsBtn = document.getElementById('openTermsModal');
+    const privacyCloseX = document.getElementById('privacyCloseX');
+    const termsCloseX = document.getElementById('termsCloseX');
+
+    if (openPrivacyBtn) {
+        openPrivacyBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (privacyModal) {
+                privacyModal.classList.remove('hidden-popup');
+                privacyModal.classList.add('show-popup');
+            }
+        });
+    }
+
+    if (openTermsBtn) {
+        openTermsBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (termsModal) {
+                termsModal.classList.remove('hidden-popup');
+                termsModal.classList.add('show-popup');
+            }
+        });
+    }
+
+    if (privacyCloseX) {
+        privacyCloseX.addEventListener('click', () => {
+            if (privacyModal) closePopup(privacyModal);
+        });
+    }
+
+    if (termsCloseX) {
+        termsCloseX.addEventListener('click', () => {
+            if (termsModal) closePopup(termsModal);
+        });
+    }
+
+    // --- Copyright & Date Cycle ---
+    function animateCopyright() {
+        const copyrightEl = document.getElementById('copyrightFooter');
+        if (!copyrightEl) return;
+
+        // NOTE: CSS handles positioning (absolute, bottom right)
+        // We only toggle classes here.
+
+        const originalText = '© MATHEWS B / 2026 <i>V<b>2.2</b></i>';
+        let showDate = false;
+
+        setInterval(() => {
+            // 1. Trigger Light Sweep
+            copyrightEl.classList.add('sweep-active');
+
+            // 2. Fade Out Text slightly before change
+            setTimeout(() => {
+                copyrightEl.classList.add('copyright-sweep-out');
+            }, 100);
+
+            // 3. Change Text Mid-Sweep
+            setTimeout(() => {
+                if (showDate) {
+                    copyrightEl.innerHTML = originalText;
+                    copyrightEl.classList.remove('date-active'); // Enable Hover
+                    showDate = false;
+                } else {
+                    const now = new Date();
+                    const dateStr = now.toLocaleDateString('en-GB', {
+                        day: 'numeric',
+                        month: 'short',
+                        year: 'numeric'
+                    }).toUpperCase();
+                    const timeStr = now.toLocaleTimeString('en-US', {
+                        hour12: true,
+                        hour: 'numeric',
+                        minute: 'numeric'
+                    });
+                    copyrightEl.innerHTML = `${dateStr} • ${timeStr}`;
+                    copyrightEl.classList.add('date-active'); // Disable Hover
+                    showDate = true;
+                }
+                // Fade In
+                copyrightEl.classList.remove('copyright-sweep-out');
+            }, 400);
+
+            // 4. Remove Sweep Class to reset
+            setTimeout(() => {
+                copyrightEl.classList.remove('sweep-active');
+            }, 1200);
+
+        }, 5000);
+    }
+
+    // Start Animation with a slight delay
+    setTimeout(animateCopyright, 1000);
+
+    // --- Logo Click Handler ---
+    // --- Logo Click Handler ---
+    // --- Logo Click Handler (Custom SPA Transition) ---
+    window.goToLogoHome = function (e) {
+        if (e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        try {
+            console.log("goToLogoHome: Triggered (Custom)");
+
+            // Cleanup Vibe Game
+            if (typeof pages !== 'undefined' && pages[currentPageIndex] && pages[currentPageIndex].id === 'vibe') {
+                if (typeof cleanupGame === 'function') cleanupGame();
+            }
+
+            // --- Standard Transition (Matches Home Button) ---
+            if (typeof window.transitionView === 'function') {
+                window.transitionView(() => {
+                    currentPageIndex = 0;
+                    history.pushState({ page: 'home' }, '', 'index.html');
+
+                    // Reset Dynamic Container
+                    if (window.dynamicContainer) window.dynamicContainer.innerHTML = '';
+
+                    // Update Content & Metadata
+                    if (typeof window.updateContent === 'function') window.updateContent();
+                    if (typeof window.updatePageMetadata === 'function') window.updatePageMetadata('home');
+
+                    window.scrollTo(0, 0);
+                });
+            } else {
+                // Fallback if transitionView is somehow missing
+                console.warn("transitionView not found, using fallback reload");
+                window.location.href = 'index.html';
+            }
+
+        } catch (err) {
+            console.error("goToLogoHome Failed:", err);
+            // Fallback only if absolutely necessary
+            window.location.href = 'index.html';
+        }
+    };
+
+    // Start Boot (Initial)
+    runBootSequence();
+
+}); // End Main DOMContentLoaded
+
+// Attach Listener Robustly
+document.addEventListener('DOMContentLoaded', () => {
+    const logoLink = document.getElementById('logoLink');
+    if (logoLink) {
+        console.log("Logo Link Found - Attaching Listener");
+        logoLink.addEventListener('click', window.goToLogoHome);
+    } else {
+        console.error("Logo Link NOT found!");
+    }
+});

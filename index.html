@@ -116,6 +116,10 @@
 
 
 
+
+
+    <!-- Restored Hero Image (Global Scope) -->
+    <!-- Ensures it is not clipped by device-frame -->
     <img class="mb" src="Images/me.png" alt="Mathews B">
 
     <!-- Main Container to center everything -->
@@ -168,7 +172,13 @@
             <!-- Boot/Preloader Screen -->
             <!-- PWA SPLASH SCREEN (Only visible in Standalone App) -->
             <div id="pwa-splash">
-                <img src="Images/favicon.svg" alt="Loading..." class="rockstar-logo">
+                <div class="spider-wrapper hidden-initially">
+                    <img src="Images/favicon.svg" alt="Loading..." class="rockstar-logo">
+                    <!-- Spider Face Elements -->
+                    <div class="spider-eye left"></div>
+                    <div class="spider-eye right"></div>
+                    <div class="spider-mouth"></div>
+                </div>
             </div>
 
             <!-- EXIT APP MODAL (Replica of Install Popup) -->
@@ -194,8 +204,11 @@
             <!-- Top Navigation Bar -->
             <header class="top-bar">
                 <div class="nav-controls">
-                    <button class="nav-btn" id="prevBtn">&lt;</button>
-                    <button class="nav-btn" id="nextBtn">&gt;</button>
+                    <button class="nav-btn" id="navLeftBtn">&lt;</button>
+                    <button class="nav-btn" id="navRightBtn">&gt;</button>
+                    <div id="navDropdown" class="nav-dropdown hidden-dropdown">
+                        <!-- Dropdown items will be injected by JS -->
+                    </div>
                 </div>
                 <div class="header-right-group">
                     <span class="page-name fade-element" id="pageNameDisplay">HOME</span>
@@ -337,15 +350,18 @@
                 </button>
             </div>
 
+            <!-- Restored Hero Image Removed (Moved to global scope) -->
+
+
             <!-- Bottom Info Bar -->
             <footer class="bottom-bar">
-                <div class="logo-container" onclick="location.reload()">
+                <a href="index.html" class="logo-container" id="logoLink">
                     <div class="shatter-wrapper">
                         <img src="Images/logo.svg" class="logo-shard s1" alt="MATHEWS B">
                         <img src="Images/logo.svg" class="logo-shard s2" alt="MATHEWS B">
                         <img src="Images/logo.svg" class="logo-shard s3" alt="MATHEWS B">
                     </div>
-                </div>
+                </a>
 
                 <!-- Taskbar Container REMOVED from here -->
 
@@ -447,11 +463,11 @@
 
             <!-- PRIVACY MODAL -->
             <div id="privacyModal" class="popup-overlay hidden-popup">
-                <div class="popup-box cookie-popup-box">
+                <div class="popup-box cookie-popup-box" style="padding: 40px 20px;">
                     <button id="privacyCloseX" class="popup-close-x">&times;</button>
-                    <h3 style="color:#00ff00; margin:10px 0; letter-spacing:1px;">PRIVACY POLICY</h3>
+                    <h3 style="color:#00ff00; margin: 0 0 15px 0; letter-spacing:1px;">PRIVACY POLICY</h3>
                     <div
-                        style="color:#fff; font-size:13px; line-height:1.5; margin-bottom: 20px; text-align: left; padding: 0 10px;">
+                        style="color:#fff; font-size:13px; line-height:1.5; margin-bottom: 0; text-align: left; padding: 0 10px;">
                         <p style="margin-bottom:10px;">
                             We value your privacy. This policy outlines how we handle your data:
                         </p>
@@ -472,11 +488,11 @@
 
             <!-- TERMS MODAL -->
             <div id="termsModal" class="popup-overlay hidden-popup">
-                <div class="popup-box cookie-popup-box">
+                <div class="popup-box cookie-popup-box" style="padding: 40px 20px;">
                     <button id="termsCloseX" class="popup-close-x">&times;</button>
-                    <h3 style="color:#00ff00; margin:10px 0; letter-spacing:1px;">TERMS OF USE</h3>
+                    <h3 style="color:#00ff00; margin: 0 0 15px 0; letter-spacing:1px;">TERMS OF USE</h3>
                     <div
-                        style="color:#fff; font-size:13px; line-height:1.5; margin-bottom: 20px; text-align: left; padding: 0 10px;">
+                        style="color:#fff; font-size:13px; line-height:1.5; margin-bottom: 0; text-align: left; padding: 0 10px;">
                         <p style="margin-bottom:10px;">
                             By accessing this website, you agree to the following terms:
                         </p>
@@ -558,6 +574,7 @@
         <!-- Service Worker Registration for PWA -->
         <!-- PWA Installation Handler -->
         <script src="pwa-install.js"></script>
+        <script src="script.js"></script>
 </body>
 
 </html>

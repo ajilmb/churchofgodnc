@@ -35,32 +35,32 @@ function showInstallPopup(isIOS = false, deviceType = '') {
     modal.id = popupId;
     modal.style.cssText = `
         position: fixed;
-        top: 0;
-        left: 0;
+        top: 0px;
+        left: 0px;
         width: 100%;
         height: 100%;
-        background: rgba(0,0,0,0.8);
+        background: rgba(0, 0, 0, 0.8);
         backdrop-filter: blur(5px);
         z-index: 10001;
         display: flex;
         justify-content: center;
         align-items: center;
         opacity: 0;
-        transition: opacity 0.3s ease;
+        transition: opacity 0.3s;
     `;
 
     // Modal Content
     const content = document.createElement('div');
     content.style.cssText = `
         background: rgba(20, 20, 20, 0.95);
-        border: 1px solid #00ff00;
-        border-radius: 12px;
+        border: 1px solid rgb(0, 255, 0);
+        border-radius: 4px;
         padding: 25px;
         width: 90%;
         max-width: 400px;
         text-align: center;
-        box-shadow: 0 0 20px rgba(0, 255, 0, 0.2);
-        font-family: 'Arimo', sans-serif;
+        box-shadow: rgba(0, 255, 0, 0.2) 0px 0px 20px;
+        font-family: Arimo, sans-serif;
         position: relative;
         transform: scale(0.9);
         transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -68,14 +68,14 @@ function showInstallPopup(isIOS = false, deviceType = '') {
 
     // Inner HTML Structure
     const defaultHTML = `
-        <button id="pwaCloseBtn" style="position:absolute; top:12px; right:20px; background:transparent; border:none; color:#fff; font-size:25px; cursor:pointer; line-height:1;">&times;</button>
+        <button id="pwaCloseBtn" style="position:absolute; top:12px; right:20px; background:transparent; border:none; color:#fff; font-size:25px; cursor:pointer; line-height:1;">×</button>
         <h3 style="color:#00ff00; margin-top:0; letter-spacing:1px;">INSTALL APPLICATION</h3><br>
         <p style="color:#fff; font-size:15px; line-height:1.5;">
             Install this application on your home screen for quick access and better performance.
         </p>
         <div style="margin-top:20px; display:flex; gap:10px; justify-content:center;">
-            <button id="pwaCancel" style="background:transparent; color:#fff; border:1px solid #555; padding:8px 20px; border-radius:4px; cursor:pointer;">LATER</button>
-            <button id="pwaConfirm" style="background:#00ff00; color:#000; border:none; padding:8px 20px; border-radius:4px; font-weight:bold; cursor:pointer;">INSTALL</button>
+            <button id="pwaCancel" style="background:transparent;color:#fff;border:1px solid #555;padding:8px 20px;border-radius: 2px;cursor:pointer;">LATER</button>
+            <button id="pwaConfirm" style="background:#00ff00;color:#000;border:none;padding:8px 20px;border-radius: 2px;font-weight:bold;cursor:pointer;">INSTALL</button>
         </div>
     `;
 
