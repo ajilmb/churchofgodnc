@@ -269,7 +269,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 
-    function renderBlog() {
+    function renderBlog(filterText = '') {
         if (typeof BLOG_DATA === 'undefined') {
             dynamicContainer.innerHTML = '<div class="loading-text">BLOG DATA NOT FOUND</div>';
             return;
@@ -278,25 +278,41 @@ document.addEventListener('DOMContentLoaded', () => {
         let blogHTML = `<div class="content-wrapper blog-content">`;
 
         // 1. Sort by Date (Latest First)
-        // Creating a sorted copy to avoid mutating original
         const sortedPosts = [...BLOG_DATA].sort((a, b) => {
             return new Date(b.date) - new Date(a.date);
         });
 
-        // 2. Loop through Sorted Data
-        sortedPosts.forEach(post => {
-            // Thumbnails removed as per user request
-            blogHTML += `
-                <div class="blog-card" onclick="openBlogModal(${post.id}, this); updateBlogURL(${post.id});">
-                    <div class="blog-info">
-                        <!-- Show CATEGORY instead of Date, Uppercase enforced -->
-                        <div class="blog-date" style="text-transform: uppercase;">${post.category || 'GENERAL'}</div>
-                        <div class="blog-title">${post.title}</div>
-                        <div class="blog-preview">${post.preview}</div>
+        // 2. Filter Data
+        const upperFilter = filterText.toUpperCase().trim();
+        const filteredPosts = sortedPosts.filter(post => {
+            if (!upperFilter) return true;
+            return (post.title && post.title.toUpperCase().includes(upperFilter)) ||
+                (post.category && post.category.toUpperCase().includes(upperFilter)) ||
+                (post.preview && post.preview.toUpperCase().includes(upperFilter));
+        });
+
+        // 3. Loop through Filtered Data
+        if (filteredPosts.length > 0) {
+            filteredPosts.forEach(post => {
+                blogHTML += `
+                    <div class="blog-card" onclick="openBlogModal(${post.id}, this); updateBlogURL(${post.id});">
+                        <div class="blog-info">
+                            <div class="blog-date" style="text-transform: uppercase;">${post.category || 'GENERAL'}</div>
+                            <div class="blog-title">${post.title}</div>
+                            <div class="blog-preview">${post.preview}</div>
+                        </div>
                     </div>
+                `;
+            });
+        } else {
+            // No Results
+            blogHTML += `
+                <div style="text-align: center; margin-top: 50px; color: var(--primary-green);">
+                    <h4>NO TRANSMISSION FOUND</h4><br>
+                    <p class="asp" style="opacity: 0.7;">ADJUST SEARCH PARAMETERS</p>
                 </div>
             `;
-        });
+        }
 
         blogHTML += `</div>`;
         dynamicContainer.innerHTML = blogHTML;
@@ -508,6 +524,18 @@ document.addEventListener('DOMContentLoaded', () => {
             dynamicContainer.classList.remove('noscroll-container');
         }
 
+        // --- BLOG SEARCH VISIBILITY ---
+        const searchContainer = document.getElementById('blogSearchContainer');
+        if (searchContainer) {
+            if (pageId === 'blog') {
+                searchContainer.style.display = 'block';
+                // Reset input on entry? Optional. Let's keep state for now.
+            } else {
+                searchContainer.style.display = 'none';
+            }
+        }
+        // ------------------------------
+
         // 2. Toggle Views
         if (page.id === 'home') {
             // SHOW HOME
@@ -589,7 +617,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- Unified Transition Helper ---
+    let isTransitioning = false; // Prevent rapid clicking
+
     window.transitionView = function (updateCallback) {
+        if (isTransitioning) return; // Block concurrent transitions
+        isTransitioning = true;
+
         // 1. Fade Out Current View
         // Find the currently active view (Home or Dynamic)
         const currentActive = document.querySelector('.active-view');
@@ -603,31 +636,33 @@ document.addEventListener('DOMContentLoaded', () => {
         if (pageNameDisplay) pageNameDisplay.classList.add('fade-out');
         if (iconDisplaySpan) iconDisplaySpan.classList.add('fade-out');
 
-        // 2. Wait for transition (400ms matches CSS)
+        // 2. Wait for transition (Increased to 600ms for slower smoother feel)
         setTimeout(() => {
             // 3. Update Content (This swaps .active-view / .hidden-view classes)
-            // The new view will get .active-view (Opacity 1). 
-            // We need to make sure the Old View (if it stays same element) resets?
-            // But updateContent swaps elements entirely usually.
+            try {
+                updateCallback();
+            } catch (e) {
+                console.error("Error during view transition:", e);
+            } finally {
+                // Clean up the manual opacity override we set on the OLD active element
+                if (currentActive) {
+                    currentActive.style.opacity = '';
+                }
 
-            updateCallback();
+                // The NEW active view (set by updateCallback) will have .active-view class.
+                // CSS handles the fade-in (opacity 0 -> 1).
 
-            // Clean up the manual opacity override we set on the OLD active element
-            if (currentActive) {
-                currentActive.style.opacity = '';
+                if (pageNameDisplay) pageNameDisplay.classList.remove('fade-out');
+                if (iconDisplaySpan) iconDisplaySpan.classList.remove('fade-out');
+
+                // Ensure MainContent is visible (just in case)
+                mainContent.style.opacity = '1';
+
+                // Release Lock
+                isTransitioning = false;
             }
 
-            // The NEW active view (set by updateCallback) will have .active-view class.
-            // CSS handles the fade-in (opacity 0 -> 1).
-            // We might need to ensure the browser registers the state change.
-
-            if (pageNameDisplay) pageNameDisplay.classList.remove('fade-out');
-            if (iconDisplaySpan) iconDisplaySpan.classList.remove('fade-out');
-
-            // Ensure MainContent is visible (just in case)
-            mainContent.style.opacity = '1';
-
-        }, 400);
+        }, 600); // Slower transition (was 400ms)
     }
 
     /* =========================================
@@ -636,18 +671,31 @@ document.addEventListener('DOMContentLoaded', () => {
        ========================================= */
 
     function handleNavigation(direction) {
+        if (isTransitioning) return; // Double check (though transitionView handles it)
 
         // Cleanup Vibe Game if leaving it
         if (pages[currentPageIndex].id === 'vibe') {
             if (typeof cleanupGame === 'function') cleanupGame();
         }
 
+        // 1. Calculate Next Index (Predictive)
+        let nextIndex;
+        if (direction === 'next') {
+            nextIndex = (currentPageIndex + 1) % pages.length;
+        } else {
+            nextIndex = (currentPageIndex - 1 + pages.length) % pages.length;
+        }
+
+        // 2. Visual Updates IMMEDIATELY (Responsiveness)
+        renderDropdown(nextIndex); // Show next page as active in dropdown
+        updateNavButtons('standard'); // Reset button to next (Standard State)
+        startNavLoop(); // Reset loop timer
+
+        // 3. Trigger View Transition
         transitionView(() => {
-            if (direction === 'next') {
-                currentPageIndex = (currentPageIndex + 1) % pages.length;
-            } else {
-                currentPageIndex = (currentPageIndex - 1 + pages.length) % pages.length;
-            }
+            // 4. Update Actual State (Inside Callback - Safe)
+            currentPageIndex = nextIndex;
+
             // Update URL
             const pageId = pages[currentPageIndex].id;
             const newUrl = `?page=${pageId}`;
@@ -655,12 +703,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
             updateContent();
             updatePageMetadata(pageId);
+
+            // Re-render dropdown with actual index (to be sure)
+            renderDropdown();
         });
     }
 
     // --- Dynamic Meta Tags ---
+    // --- Dynamic Meta Tags ---
     function updatePageMetadata(pageId, extraData = null) {
-        const baseTitle = "Mathews B - Creative Generalist";
+        const baseTitle = "Mathews B";
         let title = baseTitle;
         let description = "Portfolio of Mathews B - Creative Designer, Product Designer, and Web Developer.";
 
@@ -670,7 +722,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 description = "Im Mathews B, a Creative Generalist, Product Designer, and Web Developer based in Kozhikode, Kerala, India. Specializing in UI/UX, Motion Graphics, and Interactive Storytelling.";
                 break;
             case 'about':
-                title = "About Me - Mathews B";
+                title = "About";
                 if (typeof ABOUT_DATA !== 'undefined' && ABOUT_DATA.paragraphs) {
                     const tempDiv = document.createElement("div");
                     tempDiv.innerHTML = ABOUT_DATA.paragraphs[0];
@@ -678,19 +730,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 break;
             case 'works':
-                title = "Selected Works - Mathews B";
+                title = "Works";
                 description = "Explore the selected works and projects of Mathews B, showcasing UI/UX design, motion graphics, and creative development.";
                 break;
             case 'vibe':
-                title = "Vibe Zone - Mathews B";
+                title = "Vibe";
                 description = "Experience the Vibe Zone. A place for interactive experiments and gaming.";
                 break;
             case 'contact':
-                title = "Contact Me - Mathews B";
+                title = "Contact";
                 description = "Get in touch with Mathews B for freelance opportunities, collaborations, or just to say hello. Based in Kozhikode, Kerala.";
                 break;
             case 'blog':
-                title = "Blog - Mathews B";
+                title = "Blog";
                 description = "Read the latest thoughts, tutorials, and updates from Mathews B on Design, Technology, and Creativity.";
                 if (extraData && extraData.id) {
                     const post = BLOG_DATA.find(p => p.id == extraData.id);
@@ -714,260 +766,257 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 
+
     // --- Event Listeners ---
 
     // --- Navigation & Dropdown Logic ---
 
-    // State to track loop phase: 0 = Classic (< >), 1 = Modern (> ≡)
-    let loopState = 0;
-    // State to track if buttons have morphed to Modern Mode
-    let isModernNavActive = false;
+    // --- Synchronized Looping Navigation Logic ---
+    let navLoopInterval;
+    let isLoopActive = false;
+    let currentLoopState = 'standard'; // 'standard' (Prev/Next) or 'morphed' (Next/Hb)
+    let isMenuOpen = false;
 
-    // Initial Listeners (Classic Mode: Prev/Next)
-    if (navLeftBtn) {
-        navLeftBtn.addEventListener('click', (e) => {
-            if (isModernNavActive) {
-                // Modern Mode: Left Button is NEXT
-                handleNavigation('next');
-            } else {
-                // Classic Mode: Left Button is PREV
-                handleNavigation('prev');
+    // Elements
+    // const navLeftBtn = document.getElementById('navLeftBtn'); // Already declared
+    // const navRightBtn = document.getElementById('navRightBtn'); // Already declared
+    // const navDropdown = document.getElementById('navDropdown'); // Already declared
+
+    // SVGs / Icons
+    const iconPrev = `<span class="btn-content rotate-enter">&lt;</span>`;
+    const iconNext = `<span class="btn-content rotate-enter">&gt;</span>`;
+    const iconHamburger = `<span class="btn-content rotate-enter"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></span>`;
+    const iconClose = `<span class="btn-content rotate-enter"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></span>`;
+
+    function updateNavButtons(state) {
+        currentLoopState = state;
+
+        // If Menu is Open, Force specific state (Close button on Right)
+        if (isMenuOpen) {
+            if (navRightBtn && navRightBtn.dataset.iconType !== 'close') {
+                navRightBtn.innerHTML = iconClose;
+                navRightBtn.style.border = '1px solid var(--primary-green)';
+                navRightBtn.dataset.iconType = 'close';
             }
-        });
-    }
-
-    if (navRightBtn) {
-        navRightBtn.addEventListener('click', (e) => {
-            if (isModernNavActive) {
-                // Modern Mode: Right Button is MENU
-                e.stopPropagation();
-                toggleDropdown();
-            } else {
-                // Classic Mode: Right Button is NEXT
-                handleNavigation('next');
+            if (navLeftBtn && navLeftBtn.dataset.iconType !== 'prev') {
+                navLeftBtn.innerHTML = iconPrev;
+                navLeftBtn.dataset.iconType = 'prev';
             }
-        });
-    }
-
-    // Close Dropdown on outside click
-    document.addEventListener('click', (e) => {
-        if (navDropdown && !navDropdown.classList.contains('hidden-dropdown') && !navRightBtn.contains(e.target) && !navDropdown.contains(e.target)) {
-            closeDropdown();
+            return;
         }
-    });
 
-    let buttonLoopInterval; // Control variable for the loop
+        // Standard State: Left=Prev, Right=Next
+        if (state === 'standard') {
+            if (navLeftBtn && navLeftBtn.dataset.iconType !== 'prev') {
+                navLeftBtn.innerHTML = iconPrev;
+                navLeftBtn.dataset.iconType = 'prev';
+            }
+            if (navRightBtn) {
+                if (navRightBtn.dataset.iconType !== 'next') {
+                    navRightBtn.innerHTML = iconNext;
+                    navRightBtn.dataset.iconType = 'next';
+                }
+                // Ensure border is correct (always check or just set?)
+                // Setting style property is cheap, innerHTML is expensive/animates.
+                if (navRightBtn.dataset.borderType !== 'standard') {
+                    navRightBtn.style.border = '1px solid var(--primary-green)';
+                    navRightBtn.dataset.borderType = 'standard';
+                }
+            }
+        }
+        // Morphed State: Left=Next, Right=Hamburger
+        else if (state === 'morphed') {
+            if (navLeftBtn && navLeftBtn.dataset.iconType !== 'next') {
+                navLeftBtn.innerHTML = iconNext;
+                navLeftBtn.dataset.iconType = 'next';
+            }
+            if (navRightBtn) {
+                if (navRightBtn.dataset.iconType !== 'hamburger') {
+                    navRightBtn.innerHTML = iconHamburger;
+                    navRightBtn.dataset.iconType = 'hamburger';
+                }
+                if (navRightBtn.dataset.borderType !== 'standard') {
+                    navRightBtn.style.border = '1px solid var(--primary-green)';
+                    navRightBtn.dataset.borderType = 'standard';
+                }
+            }
+        }
+    }
 
-    function toggleDropdown() {
+    function startNavLoop() {
+        stopNavLoop(); // Clear any existing
+        if (isMenuOpen) return; // Don't loop if menu is open
+
+        isLoopActive = true;
+        navLoopInterval = setInterval(() => {
+            // Check if hovered
+            const leftHover = navLeftBtn && navLeftBtn.matches(':hover');
+            const rightHover = navRightBtn && navRightBtn.matches(':hover');
+
+            if (!leftHover && !rightHover) {
+                // Toggle State
+                const newState = currentLoopState === 'standard' ? 'morphed' : 'standard';
+                updateNavButtons(newState);
+            }
+        }, 2000); // 2 Seconds per state
+    }
+
+    function stopNavLoop() {
+        isLoopActive = false;
+        clearInterval(navLoopInterval);
+    }
+
+
+
+    // Render Dropdown
+    function renderDropdown(overrideIndex = null) {
         if (!navDropdown) return;
-        if (navDropdown.classList.contains('hidden-dropdown')) {
-            openDropdown();
-        } else {
-            closeDropdown();
-        }
-    }
-
-    function openDropdown() {
-        renderDropdown();
-        navDropdown.classList.remove('hidden-dropdown');
-
-        // STOP Loop
-        stopButtonLoop();
-
-        // Change Hamburger to Close Icon (X) AND Left to Previous (<)
-        // fade out old
-        const rightContent = navRightBtn.querySelector('.btn-content');
-        const leftContent = navLeftBtn.querySelector('.btn-content');
-
-        if (rightContent) rightContent.classList.add('fading-out');
-        if (leftContent) leftContent.classList.add('fading-out');
-
-        setTimeout(() => {
-            // Set Right to Close (X)
-            navRightBtn.innerHTML = `
-                <span class="btn-content fading-in">
-                    <svg class="close-nav-icon" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="18" y1="6" x2="6" y2="18"></line>
-                        <line x1="6" y1="6" x2="18" y2="18"></line>
-                    </svg>
-                </span>`;
-
-            // Set Left to Previous (<)
-            navLeftBtn.innerHTML = `<span class="btn-content fading-in">&lt;</span>`;
-
-            // Trigger fade in
-            requestAnimationFrame(() => {
-                const newRight = navRightBtn.querySelector('.btn-content');
-                const newLeft = navLeftBtn.querySelector('.btn-content');
-
-                if (newRight) newRight.classList.remove('fading-in');
-                if (newLeft) newLeft.classList.remove('fading-in');
-            });
-        }, 200); // Short delay for fade out
-    }
-
-    function closeDropdown() {
-        navDropdown.classList.add('hidden-dropdown');
-
-        // RESTART Loop immediately 
-        toggleNavState(); // Trigger immediate update (likely to state 0 or 1)
-        startButtonLoop();
-    }
-
-    function renderDropdown() {
         navDropdown.innerHTML = '';
+
+        const effectiveIndex = overrideIndex !== null ? overrideIndex : currentPageIndex;
+
         pages.forEach((page, index) => {
-            const item = document.createElement('a');
-            item.className = 'dropdown-item';
+            // if (page.id === 'home') return; // User requested Home in dropdown
 
-            // Create container for Layout (Text Left, Icon Right)
-            const textSpan = document.createElement('span');
-            textSpan.textContent = page.headerTitle || page.title.replace(/<[^>]*>/g, '');
+            const item = document.createElement('div');
+            item.className = 'nav-dropdown-item';
+            if (index === effectiveIndex) {
+                item.classList.add('active-dropdown-item');
+            }
+            item.innerHTML = `${page.icon} <span>${page.headerTitle}</span>`;
 
-            const iconSpan = document.createElement('span');
-            iconSpan.className = 'dropdown-icon';
-            iconSpan.innerHTML = page.icon; // Insert SVG from pages array
+            item.addEventListener('click', () => {
+                toggleMenu(false);
+                handleNavigationByIndx(index);
+            });
 
-            item.appendChild(textSpan);
-            item.appendChild(iconSpan);
-
-            item.onclick = (e) => {
-                e.preventDefault();
-                // Navigate to specific page
-                transitionView(() => {
-                    currentPageIndex = index;
-                    const pageId = pages[currentPageIndex].id;
-                    history.pushState({ page: pageId }, '', `?page=${pageId}`);
-                    updateContent();
-                    updatePageMetadata(pageId);
-                });
-                closeDropdown();
-            };
             navDropdown.appendChild(item);
         });
     }
 
-    // --- Button Loop Logic ---
-    function toggleNavState() {
-        // Safety Fallback
-        if (typeof loopState === 'undefined' || isNaN(loopState)) loopState = 0;
+    function toggleMenu(forceState = null) {
+        if (!navDropdown) return;
+        const shouldOpen = forceState !== null ? forceState : navDropdown.classList.contains('hidden-dropdown'); // If hidden, we want to open (true)
 
-        // Cycle State: 0 -> 1 -> 0
-        const nextState = (loopState + 1) % 2;
-
-        // 1. Fade OUT current content
-        wrapButtonContent(navLeftBtn);
-        wrapButtonContent(navRightBtn);
-
-        const leftContent = navLeftBtn.querySelector('.btn-content');
-        const rightContent = navRightBtn.querySelector('.btn-content');
-
-        if (leftContent) leftContent.classList.add('fading-out');
-        if (rightContent) rightContent.classList.add('fading-out');
-
-        // 2. Wait for Fade Out (500ms) - Smoother Transition
-        setTimeout(() => {
-            console.log(`Loop Transitioning to State: ${nextState}`);
-            // 3. Swap Content based on Next State
-            if (nextState === 1) {
-                // State 1: Modern (> ≡)
-                navLeftBtn.innerHTML = `<span class="btn-content fading-in">&gt;</span>`;
-                navRightBtn.innerHTML = `
-                    <span class="btn-content fading-in">
-                        <svg class="hamburger-icon" viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="3" y1="12" x2="21" y2="12"></line>
-                            <line x1="3" y1="6" x2="21" y2="6"></line>
-                            <line x1="3" y1="18" x2="21" y2="18"></line>
-                        </svg>
-                    </span>`;
-            } else {
-                // State 0: Classic (< >)
-                navLeftBtn.innerHTML = `<span class="btn-content fading-in">&lt;</span>`;
-                navRightBtn.innerHTML = `<span class="btn-content fading-in">&gt;</span>`;
-            }
-
-            // 4. Trigger Fade In
-            requestAnimationFrame(() => {
-                const newLeft = navLeftBtn.querySelector('.btn-content');
-                const newRight = navRightBtn.querySelector('.btn-content');
-
-                // Force reflow
-                void navLeftBtn.offsetWidth;
-
-                if (newLeft) newLeft.classList.remove('fading-in');
-                if (newRight) newRight.classList.remove('fading-in');
-            });
-
-            // 5. Update State
-            loopState = nextState;
-            isModernNavActive = (loopState !== 0); // Both 1 and 2 act as Modern for clicks
-
-        }, 400);
-    }
-
-    function wrapButtonContent(btn) {
-        if (!btn) return;
-        const currentHTML = btn.innerHTML;
-        // Avoid double wrapping if already wrapped (though innerHTML replacement resets it usually)
-        if (!btn.querySelector('.btn-content')) {
-            btn.innerHTML = `<span class="btn-content">${currentHTML}</span>`;
+        if (shouldOpen) {
+            // Open Menu
+            isMenuOpen = true;
+            navDropdown.classList.remove('hidden-dropdown');
+            stopNavLoop(); // Pause loop
+            updateNavButtons('standard'); // Will be overridden by isMenuOpen check inside updateNavButtons?
+            // Actually updateNavButtons checks isMenuOpen.
+            // Force update to show Close icon
+            updateNavButtons(currentLoopState);
+        } else {
+            // Close Menu
+            isMenuOpen = false;
+            navDropdown.classList.add('hidden-dropdown');
+            updateNavButtons('standard');
+            startNavLoop(); // Resume loop
         }
     }
 
-    // --- Loop Control Helpers ---
-    function startButtonLoop() {
-        // Don't start if Dropdown is OPEN
-        if (navDropdown && !navDropdown.classList.contains('hidden-dropdown')) return;
+    // --- Event Listeners ---
 
-        // Clear existing to avoid duplicates
-        if (buttonLoopInterval) clearInterval(buttonLoopInterval);
+    // Left Button
+    if (navLeftBtn) {
+        navLeftBtn.addEventListener('mouseenter', stopNavLoop);
+        navLeftBtn.addEventListener('mouseleave', startNavLoop);
+        navLeftBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (isMenuOpen) {
+                // Optional: Close menu if clicking outside? 
+                // For now, let's allow navigation even if menu is open?
+                // Or maybe Left Button acts as Prev always?
+            }
 
-        console.log("Starting Button Loop...");
-        buttonLoopInterval = setInterval(toggleNavState, 4000);
-    }
-
-    function stopButtonLoop() {
-        if (buttonLoopInterval) clearInterval(buttonLoopInterval);
-        buttonLoopInterval = null;
-        console.log("Button Loop Paused");
-    }
-
-    // --- Independent Button Loop Logic ---
-    function initButtonLoop() {
-        // Run first toggle after short delay to allow boot/render
-        setTimeout(() => {
-            // First transition
-            toggleNavState();
-            // Start continuous loop
-            startButtonLoop();
-        }, 4500); // Standard wait for boot to settle, then start
-
-        // Add Pause-on-Hover / Touch Listeners
-        [navLeftBtn, navRightBtn].forEach(btn => {
-            if (!btn) return;
-
-            // Desktop Hover
-            btn.addEventListener('mouseenter', stopButtonLoop);
-            btn.addEventListener('mouseleave', startButtonLoop);
-
-            // Mobile/Touch Interaction
-            // Pause on touch start (e.g. while looking at it or about to click)
-            btn.addEventListener('touchstart', (e) => {
-                // Determine if we should stop. Yes, for stability.
-                stopButtonLoop();
-            }, { passive: true });
-
-            // Resume on touch end (unless click handler triggers something else)
-            btn.addEventListener('touchend', () => {
-                // Delay resume slightly in case of navigation, 
-                // but usually navigation will reload or dropdown will handle state
-                setTimeout(startButtonLoop, 500);
-            });
+            // Action depends on state
+            if (currentLoopState === 'standard') {
+                handleNavigation('prev');
+            } else {
+                handleNavigation('next'); // Left button acts as Next in morphed state
+            }
         });
     }
 
-    // Call Loop Init when script loads (it handles its own delay)
-    initButtonLoop();
+    // Right Button
+    if (navRightBtn) {
+        navRightBtn.addEventListener('mouseenter', stopNavLoop);
+        navRightBtn.addEventListener('mouseleave', startNavLoop);
+        navRightBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+
+            if (isMenuOpen) {
+                toggleMenu(false);
+                return;
+            }
+
+            if (currentLoopState === 'standard') {
+                handleNavigation('next');
+            } else {
+                toggleMenu(true);
+            }
+        });
+    }
+
+    // Initialize
+    updateNavButtons('standard');
+    renderDropdown();
+    startNavLoop();
+
+    // --- Click Outside to Close Menu ---
+    document.addEventListener('click', (e) => {
+        if (isMenuOpen && navDropdown && !navDropdown.contains(e.target)) {
+            // If the user clicked the hamburger, that button's listener handles the toggle.
+            // The button listener uses e.stopPropagation(), so this listener should not fire for button clicks.
+            // But explicit check adds safety.
+            if (navRightBtn && navRightBtn.contains(e.target)) return;
+
+            toggleMenu(false);
+        }
+    });
+
+    // Helper for direct navigation
+    function handleNavigationByIndx(index) {
+        if (index === currentPageIndex) return;
+        if (window.isTransitioning) return;
+
+        // Cleanup Vibe if needed
+        if (pages[currentPageIndex].id === 'vibe') {
+            if (typeof cleanupGame === 'function') cleanupGame();
+        }
+
+        transitionView(() => {
+            currentPageIndex = index;
+            const pageId = pages[currentPageIndex].id;
+            const newUrl = `?page=${pageId}`;
+            history.pushState({ page: pageId }, '', newUrl);
+            updateContent();
+            updatePageMetadata(pageId);
+            renderDropdown(); // Update active state in dropdown
+        });
+    }
+
+    // Dropdown outside click listener REMOVED.
+
+    // Cycle Start REMOVED.
+
+
+
+
+    // --- 3D Home Button Logic ---
+
+    // 1. Home Face Click -> Go Home
+
+
+    // 2. Menu Face Click -> Open Nav Modal
+
+
+
+
+
+
 
 
     if (homeBtn) {
@@ -993,25 +1042,34 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
+
+
+    // --- Animation Helper ---
     // --- Animation Helper ---
     function playHeroEntry() {
         if (!mbImage) return;
 
-        // Ensure display is block (in case it was hidden)
-        mbImage.style.display = 'block';
+        // Reset Animation State
+        mbImage.classList.remove('animate-ghost');
+        mbImage.classList.remove('entry-anim');
+        mbImage.classList.remove('slide-up-initial'); // Ensure this is removed
 
-        // Force reflow to ensure display change is registered before class add
+        // Force Reflow
         void mbImage.offsetWidth;
 
-        // Trigger CSS Transition with a small delay to ensure browser paints first
-        setTimeout(() => {
-            mbImage.classList.add('hero-revealed');
-        }, 50);
+        // Ensure Display is Block
+        mbImage.style.display = 'block';
+        mbImage.style.opacity = ''; // Let CSS handle it
+        mbImage.style.transition = ''; // clear any inline transitions
 
-        // Ghost Effect Trigger
+        // Trigger Entry Animation (CSS Keyframes)
+        mbImage.classList.add('entry-anim');
+
+        // Wait for animation to finish (2.5s) then switch to Ghost Loop
         setTimeout(() => {
+            mbImage.classList.remove('entry-anim');
             mbImage.classList.add('animate-ghost');
-        }, 2000);
+        }, 2500);
     }
 
     // --- Boot Sequence ---
@@ -1023,7 +1081,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const isPWA = window.matchMedia('(display-mode: standalone)').matches;
 
         if (isPWA && pwaSplash && !skipBoot) {
-            // If PWA, we wait for the Rockstar Animation (Green Screen) to finish FIRST.
+            // If PWA, we wait for the Splash Logo (Green Screen) to finish FIRST.
             // Then we fade it out and start the standard Radio Wave boot.
             setTimeout(() => {
                 pwaSplash.style.opacity = '0';
@@ -1032,7 +1090,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     // NOW Start Standard Radio Wave Boot
                     startStandardBoot(skipBoot);
                 }, 500);
-            }, 4200); // 1.5s Delay + 2.5s Anim + Buffer
+            }, 2000); // Reduced from 4200ms
             return;
         }
 
@@ -1089,7 +1147,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 mbImage.classList.add('slide-up-initial');
                             }
                         }
-                    }, 2500); // 2.5s Delay for Image
+                    }, 500); // 0.5s Delay for Image (Smoother entry)
 
                 }, 500);
             }
@@ -1260,13 +1318,32 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         // Toggle Logic for Buttons
-        const toggleAudio = () => {
-            if (bgAudio.paused) bgAudio.play().catch(console.error);
-            else bgAudio.pause();
-            updatePlayerUI();
+        // Toggle Logic for Buttons
+        const toggleAudio = (e) => {
+            if (e) {
+                e.preventDefault();
+                e.stopPropagation(); // Prevent bubbling issues
+            }
+
+            if (bgAudio.paused) {
+                const playPromise = bgAudio.play();
+                if (playPromise !== undefined) {
+                    playPromise.catch(error => {
+                        console.error("Audio Play Error:", error);
+                        updatePlayerUI(); // Reset UI on failure
+                    });
+                }
+            } else {
+                bgAudio.pause();
+            }
+            // Note: We rely on 'play' and 'pause' events to update UI
         };
 
-        if (playPauseBtn) playPauseBtn.addEventListener('click', toggleAudio);
+        if (playPauseBtn) {
+            // Remove any existing listeners (good practice if re-running)
+            playPauseBtn.removeEventListener('click', toggleAudio);
+            playPauseBtn.addEventListener('click', toggleAudio);
+        }
 
         bgAudio.addEventListener('play', updatePlayerUI);
         bgAudio.addEventListener('pause', updatePlayerUI);
@@ -1777,17 +1854,25 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- CONTACT MODAL LOGIC (GENIE EFFECT) ---
-    // Using user-provided URL + embedded=true for cleanest look
-    const GFORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLScJP0BjXUCNp9HsIc3fLi2PatZJBzY1DqCzhbdFcgf5znY4tw/viewform?embedded=true&usp=dialog";
+    // Custom Form Logic
 
     window.openContactModal = function (originElement) {
         const contactModal = document.getElementById('contactModal');
         // Warning: This selector looks for .drive-modal-container inside #contactModal
         // Ensure index.html structure matches this
         const contactModalContainer = contactModal ? contactModal.querySelector('.drive-modal-container') : null;
-        const contactFrame = document.getElementById('contactFrame');
 
-        if (!contactModal || !contactModalContainer || !contactFrame) {
+        // Reset Form State
+        const contactForm = document.getElementById('contactForm');
+        const successMsg = document.getElementById('contactSuccessMsg');
+        if (contactForm) {
+            contactForm.style.display = 'flex';
+            contactForm.reset();
+        }
+        if (successMsg) successMsg.style.display = 'none';
+
+
+        if (!contactModal || !contactModalContainer) {
             console.error("Contact Modal elements not found!");
             return;
         }
@@ -1805,8 +1890,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         contactModalContainer.style.transformOrigin = `${originX}px ${originY}px`;
 
-        // 2. Load Contact Form
-        contactFrame.src = GFORM_URL;
+        // 2. Load Contact Form - ALREADY LOADED IN HTML
+        // No src assignment needed.
 
         // 3. Activate Blur
         deviceFrame.classList.add('blur-mode');
@@ -1817,6 +1902,45 @@ document.addEventListener('DOMContentLoaded', () => {
             contactModal.classList.remove('minimized');
             contactModal.classList.remove('genie-anim');
             contactModal.classList.add('active');
+        });
+    }
+
+    // --- FORM SUBMISSION HANDLER ---
+    const contactForm = document.getElementById('contactForm');
+    if (contactForm) {
+        contactForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            // Simulate Sending
+            const btn = contactForm.querySelector('.submit-btn-form');
+            if (btn) {
+                const originalText = btn.textContent;
+                btn.textContent = "SENDING...";
+                btn.disabled = true;
+
+                setTimeout(() => {
+                    // Success!
+                    contactForm.style.display = 'none';
+                    const successMsg = document.getElementById('contactSuccessMsg');
+                    if (successMsg) {
+                        successMsg.style.display = 'flex';
+                        successMsg.style.flexDirection = 'column';
+                        successMsg.style.alignItems = 'center';
+                        successMsg.style.justifyContent = 'center';
+                        successMsg.style.height = '100%';
+                    }
+
+                    // Reset Button
+                    btn.textContent = originalText;
+                    btn.disabled = false;
+
+                    // Close automatically after 2s?
+                    setTimeout(() => {
+                        window.closeContactModal();
+                    }, 2000);
+
+                }, 1500);
+            }
         });
     }
 
@@ -1836,7 +1960,7 @@ document.addEventListener('DOMContentLoaded', () => {
         function finalizeContactClose() {
             // FIX: Hide FIRST to prevent ghost transition
             contactModal.style.display = 'none';
-            if (contactFrame) contactFrame.src = '';
+            // if (contactFrame) contactFrame.src = ''; // REMOVED
 
             contactModal.classList.remove('active');
             contactModal.classList.remove('genie-anim');
@@ -2177,13 +2301,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // 2. Toggle Visibility on Scroll
         // function to check scroll position of EITHER
+        let scrollTimeout;
         const checkScroll = () => {
             // Check scroll of overlay (mobile) OR content (desktop)
             const scrollTop = blogContentArea.scrollTop + blogModalOverlay.scrollTop;
+
             if (scrollTop > 50) {
                 blogScrollTopBtn.classList.add('visible');
+
+                // Add scrolling state (Opacity 100%)
+                blogScrollTopBtn.classList.add('is-scrolling');
+
+                // Clear existing timeout
+                clearTimeout(scrollTimeout);
+
+                // Remove scrolling state after 1000ms of inactivity (Return to 50%)
+                scrollTimeout = setTimeout(() => {
+                    blogScrollTopBtn.classList.remove('is-scrolling');
+                }, 1000);
+
             } else {
                 blogScrollTopBtn.classList.remove('visible');
+                blogScrollTopBtn.classList.remove('is-scrolling');
             }
         };
 
@@ -2284,11 +2423,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (popupAd && closePopupBtn) {
         // Show after delay (Wait for boot sequence to finish ~3s)
-        // Show after delay (Wait for boot sequence to finish ~3s)
-        /* 
-           Logic removed as per user request for cleanup.
-           Enable here if needed in future.
-        */
+        // CHECK: Only show on HOME page
+        setTimeout(() => {
+            // Check if active page is Home
+            // The home view has ID 'home-view' and gets class 'active-view' when visible
+            const homeViewEl = document.getElementById('home-view');
+            const isHomeActive = homeViewEl && homeViewEl.classList.contains('active-view');
+
+            if (isHomeActive) {
+                popupAd.style.display = 'flex';
+                void popupAd.offsetWidth; // Force Reflow
+                popupAd.classList.remove('hidden-popup');
+                popupAd.classList.add('show-popup');
+            }
+        }, 3500);
         closePopupBtn.addEventListener('click', () => {
             popupAd.classList.remove('show-popup');
             // Wait for transition then hide
@@ -2495,26 +2643,36 @@ document.addEventListener('DOMContentLoaded', () => {
     // Start Monitoring
     monitorHeroImage();
 
-    // --- EXIT APP LOGIC (PWA) ---
-    const exitAppBtn = document.getElementById('exitAppBtn');
+    // --- EXIT APP LOGIC (Back Button Trap) ---
     const exitModal = document.getElementById('exitModal');
     const confirmExitBtn = document.getElementById('confirmExitBtn');
     const cancelExitBtn = document.getElementById('cancelExitBtn');
 
-    // Check if PWA (Standalone)
-    const isPWA = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+    if (exitModal && confirmExitBtn && cancelExitBtn) {
 
-    if (isPWA && exitAppBtn) {
-        exitAppBtn.style.display = 'block'; // Show button only in App
-    }
+        // Trap the back button logic
+        // We push a state so that the first 'back' action triggers popstate instead of leaving
+        window.history.pushState(null, "", window.location.href);
 
-    if (exitAppBtn && exitModal) {
-        exitAppBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            exitModal.classList.remove('hidden-popup');
-            exitModal.classList.add('show-popup');
+        window.addEventListener('popstate', function (event) {
+            // Logic: If user presses back, show Exit Modal instead of leaving
+
+            // Check if modal is already visible
+            if (exitModal.classList.contains('show-popup')) {
+                // If open, close it (Cancel action)
+                exitModal.classList.remove('show-popup');
+                setTimeout(() => exitModal.classList.add('hidden-popup'), 500);
+            } else {
+                // If closed, OPEN it
+                exitModal.classList.remove('hidden-popup');
+                exitModal.classList.add('show-popup');
+            }
+
+            // RE-TRAP: Push state again so the NEXT back press also triggers this
+            window.history.pushState(null, "", window.location.href);
         });
 
+        // Cancel Button
         cancelExitBtn.addEventListener('click', () => {
             exitModal.classList.remove('show-popup');
             setTimeout(() => {
@@ -2522,8 +2680,9 @@ document.addEventListener('DOMContentLoaded', () => {
             }, 500);
         });
 
+        // Confirm Button
         confirmExitBtn.addEventListener('click', () => {
-            window.close(); // Works in PWA
+            window.close(); // Attempt to close window (works in PWA)
         });
     }
 
@@ -2597,6 +2756,21 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 
+
+    // --- KEYBOARD NAVIGATION LOGIC ---
+    document.addEventListener('keydown', (e) => {
+        // Ignore if Vibe Game is playing (Game controls take precedence)
+        if (pages[currentPageIndex].id === 'vibe' && typeof gameState !== 'undefined' && gameState === 'PLAYING') return;
+
+        // Ignore if any modal is open
+        if (document.querySelector('.show-popup') || document.querySelector('.drive-modal-overlay.active')) return;
+
+        if (e.key === 'ArrowRight') {
+            handleNavigation('next');
+        } else if (e.key === 'ArrowLeft') {
+            handleNavigation('prev');
+        }
+    });
 
     // --- COOKIE CONSENT LOGIC ---
     const cookieStrip = document.getElementById('cookieConsentStrip');
@@ -2789,6 +2963,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     // Update Content & Metadata
                     if (typeof window.updateContent === 'function') window.updateContent();
                     if (typeof window.updatePageMetadata === 'function') window.updatePageMetadata('home');
+                    if (typeof renderDropdown === 'function') renderDropdown(); // Update active state
 
                     window.scrollTo(0, 0);
                 });
@@ -2807,6 +2982,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Start Boot (Initial)
     runBootSequence();
+
+    // --- BLOG SEARCH LOGIC ---
+    const blogSearchInput = document.getElementById('blogSearchInput');
+    const blogSearchReset = document.getElementById('blogSearchReset');
+
+    if (blogSearchInput) {
+        blogSearchInput.addEventListener('input', (e) => {
+            renderBlog(e.target.value);
+        });
+    }
+
+    if (blogSearchReset) {
+        blogSearchReset.addEventListener('click', () => {
+            if (blogSearchInput) {
+                blogSearchInput.value = '';
+                renderBlog('');
+                blogSearchInput.focus();
+            }
+        });
+    }
 
 }); // End Main DOMContentLoaded
 

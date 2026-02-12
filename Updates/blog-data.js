@@ -23,7 +23,6 @@ const BLOG_DATA = [
     },
 
     // --- ARCHIVED POSTS (HIDDEN) ---
-    /*
     {
         id: 1,
         type: "image",
@@ -274,5 +273,4 @@ const BLOG_DATA = [
             </div>
         `
     }
-    */
 ];

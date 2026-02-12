@@ -16,7 +16,6 @@
     {
       "src": "Images/app-icon.png",
       "sizes": "512x512",
-      "type": "image/png",
       "purpose": "any maskable"
     },
     {
@@ -24,28 +23,6 @@
       "sizes": "1024x1024",
       "type": "image/png",
       "purpose": "any maskable"
-    }
-  ],
-  "widgets": [
-    {
-      "name": "M Control Deck",
-      "short_name": "Control Deck",
-      "description": "Quick access to Music and Blog Intel",
-      "icons": [
-        {
-          "src": "Images/widget.svg",
-          "sizes": "192x192",
-          "type": "image/svg+xml"
-        }
-      ],
-      "screenshots": [],
-      "tag": "control-deck",
-      "ms_ac_template": "widget-hub.html",
-      "data": {
-        "content_type": "text/html"
-      },
-      "type": "application/x-web-app-manifest+json",
-      "url": "widget-hub.html"
     }
   ]
 }
