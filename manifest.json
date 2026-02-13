@@ -1,0 +1,71 @@
+{
+  "name": "Mathews B",
+  "short_name": "Mathews B",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "Images/app-icon.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "Images/app-icon.png",
+      "sizes": "512x512",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "Images/app-icon.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "About",
+      "short_name": "About",
+      "description": "About Mathews B",
+      "url": "/index.html?section=about",
+      "icons": [
+        {
+          "src": "Images/app-icon.png",
+          "sizes": "192x192"
+        }
+      ]
+    }
+  ],
+  "widgets": [
+    {
+      "name": "Mathews B",
+      "short_name": "Mathews B",
+      "description": "Portoflio Quick Access",
+      "icons": [
+        {
+          "src": "Images/widget.svg",
+          "sizes": "512x512",
+          "type": "image/svg+xml"
+        }
+      ],
+      "screenshots": [
+        {
+          "src": "Images/widget.svg",
+          "sizes": "512x512",
+          "type": "image/svg+xml",
+          "label": "Widget Preview"
+        }
+      ],
+      "tag": "mathews-b-widget",
+      "template": "widget-template",
+      "ms_ac_template": "widget.html",
+      "data": {
+        "content": "widget.html"
+      },
+      "type": "application/json"
+    }
+  ]
+}
