@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sitemap Generator</title>
+    <style>
+        body {
+            font-family: monospace;
+            background: #000;
+            color: #0f0;
+            padding: 20px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            font-size: 1.2rem;
+            background: #0f0;
+            color: #000;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .btn:hover {
+            background: #fff;
+        }
+
+        #output {
+            margin-top: 20px;
+            white-space: pre-wrap;
+            border: 1px solid #333;
+            padding: 10px;
+            color: #fff;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>SITEMAP GENERATOR V1.0</h1>
+    <p>Instructions: Click Generate. A 'sitemap.xml' file will be downloaded. Replace the file in your root folder with
+        this new one.</p>
+    <button class="btn" onclick="generateSitemap()">GENERATE SITEMAP</button>
+    <div id="output"></div>
+
+    <!-- Load Data -->
+    <script src="about-data.js"></script>
+    <script src="blog-data.js"></script>
+
+    <script>
+        function generateSitemap() {
+            const domain = "https://www.mathewsb.in";
+            const date = new Date().toISOString().split('T')[0];
+
+            let xml = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+    <!-- Static & Main Pages -->
+    <url>
+        <loc>${domain}/</loc>
+        <lastmod>${date}</lastmod>
+        <priority>1.0</priority>
+    </url>
+    <url>
+        <loc>${domain}/?page=about</loc>
+        <lastmod>${date}</lastmod>
+        <priority>0.8</priority>
+        <image:image>
+            <image:loc>${domain}/Images/me.png</image:loc>
+            <image:title>Mathews B - Creative Generalist</image:title>
+        </image:image>
+    </url>
+    <url>
+        <loc>${domain}/?page=works</loc>
+        <lastmod>${date}</lastmod>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>${domain}/?page=contact</loc>
+        <lastmod>${date}</lastmod>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>${domain}/Images/pdf/mathews_b.pdf</loc>
+        <lastmod>${date}</lastmod>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://linktr.ee/mathewsb</loc>
+        <lastmod>${date}</lastmod>
+        <priority>0.5</priority>
+    </url>
+
+    <!-- Dynamic Blog Posts -->`;
+
+            if (typeof BLOG_DATA !== 'undefined') {
+                BLOG_DATA.forEach(post => {
+                    // Escape special characters for XML
+                    const title = post.title.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&apos;');
+                    const media = post.media ? `${domain}/${post.media}` : '';
+
+                    xml += `
+    <url>
+        <loc>${domain}/?page=blog&amp;id=${post.id}</loc>
+        <lastmod>${post.date ? new Date(post.date).toISOString().split('T')[0] : date}</lastmod>
+        <priority>0.7</priority>`;
+
+                    if (media) {
+                        xml += `
+        <image:image>
+            <image:loc>${media}</image:loc>
+            <image:title>${title}</image:title>
+        </image:image>`;
+                    }
+
+                    xml += `
+    </url>`;
+                });
+            }
+
+            xml += `
+</urlset>`;
+
+            // Display
+            document.getElementById('output').textContent = "Generated! Downloading...";
+
+            // Download
+            const blob = new Blob([xml], { type: 'text/xml' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'sitemap.xml';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+    </script>
+</body>
+
+</html>
