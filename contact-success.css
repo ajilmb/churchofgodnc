@@ -1,0 +1,140 @@
+/* --- Contact Form Success Mode (Premium Cyberpunk Strip) --- */
+.drive-modal-container.success-mode {
+    width: auto !important;
+    max-width: 400px !important;
+    /* Constrain width for a sleek strip look */
+    min-width: 300px !important;
+    height: auto !important;
+    min-height: 120px !important;
+
+    border-radius: 8px !important;
+    /* Slightly softer corners */
+    border: 1px solid #00ff00;
+
+    /* Cyberpunk Glow Effect */
+    box-shadow:
+        0 0 15px rgba(0, 255, 0, 0.2),
+        inset 0 0 10px rgba(0, 255, 0, 0.1);
+
+    background: rgba(0, 0, 0, 0.95);
+    /* Deep black background */
+    backdrop-filter: blur(10px);
+    /* Modern frosted glass hint */
+
+    padding: 30px !important;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    /* Center in screen */
+    position: absolute !important;
+    /* Ensure it stays centered if parent is relative */
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+
+    /* Prevent scrollbars */
+    overflow: hidden !important;
+
+    /* Animation entry */
+    animation: successStripPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes successStripPop {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -40%) scale(0.9);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+/* Hide Window Controls in Success Mode */
+.drive-modal-container.success-mode .window-controls,
+.drive-modal-container.success-mode .close-btn,
+.drive-modal-container.success-mode .minimize-btn {
+    display: none !important;
+}
+
+/* Adjust Content Wrapper in Success Mode */
+#contactModal .drive-modal-container.success-mode .drive-content-wrapper {
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    background: transparent !important;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden !important;
+    /* Force no scroll */
+    scrollbar-width: none;
+    /* Firefox */
+}
+
+#contactModal .drive-modal-container.success-mode .drive-content-wrapper::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+}
+
+/* Success Message Typography */
+#contactSuccessMsg {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-family: 'Inter', sans-serif;
+    /* Use main font or fallback */
+}
+
+#contactSuccessMsg h3 {
+    margin: 0 0 8px 0 !important;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #00ff00 !important;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
+}
+
+#contactSuccessMsg p {
+    margin: 0 !important;
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.8) !important;
+    font-weight: 400;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+/* Optional: Success Icon or Indicator */
+/* If you added <div class="success-icon"></div> in HTML */
+.success-icon {
+    width: 40px;
+    height: 40px;
+    margin-bottom: 15px;
+    border-radius: 50%;
+    border: 2px solid #00ff00;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
+}
+
+.success-icon::after {
+    content: '';
+    width: 12px;
+    height: 6px;
+    border-left: 2px solid #00ff00;
+    border-bottom: 2px solid #00ff00;
+    transform: rotate(-45deg) translate(2px, -2px);
+    display: block;
+}
