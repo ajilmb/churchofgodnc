@@ -1,0 +1,1304 @@
+<!-- 
+    FILE: index.html
+    PURPOSE: Main entry point of the website (Single Page Application structure).
+    
+    CONNECTED FILES:
+    - CSS:
+        - style.css (Main Layout & Design)
+        - modal.css (Windows/Modals styling)
+        - index.css (PWA Splash & Boot Animations)
+    - JS:
+        - script.js (Main Logic, Navigation, UI Interactions)
+        - pwa-install.js (Handles App Installation Prompt)
+        - sw.js (Service Worker for Offline Mode)
+        - Updates/blog-data.js (Content Source for Blog)
+        - Updates/about-data.js (Content Source for About Section)
+        - Updates/scrolltxt-footer.js (Content for Footer Marquee)
+    - CONFIG:
+        - manifest.json (PWA Configuration)
+-->
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <title>Mathews B</title>
+    <meta name="description"
+        content="Im Mathews B, a Creative Generalist, Product Designer, and Web Developer based in Kozhikode, Kerala, India. Specializing in UI/UX, Motion Graphics, and Interactive Storytelling. Passionate about media, animation, advertising, filmmaking, lighting, composition, music, and audio. Explore my portfolio for unrestricted design and development capabilities. I love, I create, I do.">
+    <meta name="keywords"
+        content="Mathews B, Mathews, Mathew, Mateo, MathewB, MathewsB, Mathews B Kerala, Mathews B India, Mathews B Kozhikode, Mathews B Calicut, Creative Designer Mathews, Web Developer Mathews, Product Designer Mathews, UI/UX Designer Mathews, Motion Graphics Mathews, Interactive Storytelling Mathews, Mathews B Portfolio, Best Creative Generalist, Best Designer in Kerala, Best Developer in Kerala, Independent Designer, Freelance Designer, Creative Technologist, Frontend Developer, Creative Coder, Media Professional, Animation Expert, Advertising Specialist, Filmmaker, Cinematographer, Video Editor, Lighting Artist, Composition Expert, Music Producer, Audio Engineer, Sound Designer, Storyteller, Visual Storyteller, Brand Identity Designer, Logo Designer, Graphic Designer, kzhikode, kozhikode, calicut, kalicut, kozikode, cozhikode, calicutt, mathews, mathews b, mathew, mathew b, mateo, mateo b, mathewb, mathewsb, mathws, mathw, mthws, mthw, mthews, mathewz, mathewz b, mathew s, mathew s b, mathews b, mathews b., mathews.b, mathews-b, mathews_b, mathew archery, archery mathew, mathews b archery, mathews archery bow, mathews compound bow, creativedesignermathews, creative designer mathews, mathews creative designer, designer mathews, mathews designer, web developer mathews, mathews web developer, developer mathews, mathews developer, product designer mathews, mathews product designer, eaddesigner, animation, advertising, filmmaking, lighting, composition, music, audio, 3D, 2D, VFX, premiere pro, after effects, blender, react, javascript, html, css, next.js, branding, logo, identity, strategy, social media, marketing, content creation, youtube, instagram, facebook, linkedin, twitter, design, art, creative, portfolio, website, web, app, mobile, responsive, fast, secure, seo, optimization, performance, accessibility, usability, user experience, user interface, interaction design, visual design, graphic design, motion design, sound design, game design, unity, unreal, godot, c#, c++, python, java, node, express, mongo, sql, database, backend, frontend, fullstack, devops, cloud, aws, azure, gcp, docker, kubernetes, git, github, gitlab, bitbucket, jira, trello, asana, slack, discord, zoom, meet, skype, teams, email, chat, voice, video, streaming, recording, editing, mixing, mastering, production, direction, script, storyboard, concept, character, environment, prop, vehicle, weapon, creature, monster, robot, alien, human, animal, plant, nature, city, space, sci-fi, fantasy, horror, comedy, drama, action, adventure, romance, thriller, mystery, crime, documentary, news, sport, education, tutorial, guide, review, blog, vlog, podcast, stream, live, event, show, concert, festival, exhibition, gallery, museum, library, school, college, university, institute, academy, course, class, lesson, workshop, seminar, webinar, conference, summit, forum, symposium, meetup, hackathon, jam, contest, competition, award, prize, medal, trophy, certificate, diploma, degree, master, phd, doctor, professor, teacher, student, learner, beginner, intermediate, advanced, expert, professional, master, guru, wizard, ninja, rockstar, legend, hero, idol, icon, star, celebrity, influencer, leader, manager, director, executive, founder, owner, partner, investor, sponsor, client, customer, user, fan, follower, subscriber, supporter, patron, donor, member, friend, colleague, peer, mentor, coach, trainer, guide, helper, assistant, associate, affiliate, partner, collaborator, co-founder, co-owner, co-director, co-producer, co-writer, co-editor, co-designer, co-developer, co-creator, team, group, crew, squad, unit, department, division, branch, office, hq, headquarters, center, hub, lab, studio, agency, firm, company, corporation, enterprise, organization, institution, foundation, association, federation, union, league, alliance, coalition, network, community, society, club, circle, collective, movement, campaign, initiative, project, program, plan, strategy, tactic, method, technique, process, workflow, detailed, minimal, clean, modern, sleek, futuristic, retro, vintage, classic, timeless, elegant, sophisticated, professional, playful, fun, quirky, unique, original, creative, innovative, experimental, cutting edge, trending, popular, famous, viral, awesome, amazing, cool, great, best, top, number one, #1, first, leader, pioneer, innovator, creator, maker, builder, hacker, coder, programmer, developer, engineer, scientist, researcher, analyst, strategist, consultant, advisor, mentor, coach, trainer, teacher, educator, figma, adobe xd, sketch, invision, zeplin, framer, proto.io, marvel, balsamig, axure, principle, origami, flinto, atomic, uxpin, webflow, wordpress, wix, squarespace, shopify, magento, bigcommerce, woocommerce, prestashop, opencart, zencart, oscommerce, drupal, joomla, ghost, medium, substack, tumblr, blogger, typepad, livejournal, weebly, jimdo, strike, strikingly, duda, tilda, readymag, cargo, format, carbon, Dunked, adobe portfolio, behance, dribbble, artstation, deviantart, 500px, flickr, vimeo, soundcloud, bandcamp, spotify, apple music, tidal, deezer, amazon music, google play, youtube music, pandora, iheartradio, tunein, mixcloud, hearthis, audiomack, reverbnation, jamendo, magnatune, cc, creative commons, royalty free, stock, footage, image, photo, video, audio, music, sfx, sound effect, loop, sample, preset, plugin, extension, addon, script, code, library, framework, api, sdk, ide, editor, terminal, console, command line, shell, bash, zsh, powershell, git bash, wsl, linux, mac, windows, android, ios, iphone, ipad, tablet, desktop, laptop, server, hosting, domain, dns, cdn, ssl, tls, https, http, ftp, ssh, scp, rsync, telnet, smtp, pop3, imap, dns, dhcp, tcp, udp, ip, ipv4, ipv6, mac address, subnet, gateway, router, switch, hub, modem, firewall, vpn, proxy, nat, port forwarding, dmz, lan, wan, wlan, vlan, man, pan, san, can, gan, internet, intranet, extranet, darknet, deep web, surface web, world wide web, www, w3c, ietf, rfc, iso, ansi, ieee, nist, gdpr, ccpa, hipaa, pci dss, soc2, ferpa, coppa, glba, fisma, sox, basel, solvency, mifid, psd2, pcidss, ul, ce, rohs, weee, fcc, ccc, kcc, bis, tisi, nom, eac, saso, gmark, rcm, ick, sabers, inmetro, anatel, ntc, ncra, mcit, tra, citc, cra, tra, ntra, ict, mpt, mcit, mdd/mdr, ivdd/ivdr, aimdd, ped, atex, lvd, emc, red, r&tte, mid, nawi, gads, gar, tped, cpr, ppe, regulation, directive, standard, norm, certification, compliance, audit, inspection, testing, validation, verification, qa, qc, qms, iso 9001, iso 14001, iso 45001, iso 27001, iso 22301, iso 20000, iso 50001, iso 31000, iso 26000, sa 8000, fsc, pefc, msc, asc, rspo, rain forest alliance, fair trade, organic, vegan, cruelty free, gluten free, non gmo, halal, kosher, parve, keto, paleo, atkins, whole30, dash, mind, tlc, volumetrics, ww, weight watchers, noom, jenny craig, nutrisystem, medifast, optavia, south beach, zone, macrobiotic, raw, fruitarian, pescatarian, flexitarian, vegetarian">
+    <meta name="author" content="Mathews B">
+    <meta name="robots" content="index, follow">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#000000">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://mathewsb.in/">
+    <meta property="og:title" content="ᴘᴏʀᴛꜰᴏʟɪᴏ - ᴍᴀᴛʜᴇᴡꜱ ʙ">
+    <meta property="og:description"
+        content="Im Mathews B, a Creative Generalist, Product Designer, and Web Developer based in Kozhikode, Kerala, India. Specializing in UI/UX, Motion Graphics, and Interactive Storytelling. Passionate about media, animation, advertising, filmmaking, lighting, composition, music, and audio. Explore my portfolio for unrestricted design and development capabilities. I love, I create, I do.">
+    <meta property="og:image" content="https://mathewsb.in/Images/me.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://www.mathewsb.in/">
+    <meta property="twitter:title" content="ᴘᴏʀᴛꜰᴏʟɪᴏ - ᴍᴀᴛʜᴇᴡꜱ ʙ">
+    <meta property="twitter:description"
+        content="Im Mathews B, a Creative Generalist, Product Designer, and Web Developer based in Kozhikode, Kerala, India. Specializing in UI/UX, Motion Graphics, and Interactive Storytelling. Passionate about media, animation, advertising, filmmaking, lighting, composition, music, and audio. Explore my portfolio for unrestricted design and development capabilities. I love, I create, I do.">
+    <meta property="twitter:image" content="https://mathewsb.in/Images/me.png">
+    <meta name="thumbnail" content="https://www.mathewsb.in/Images/me.png">
+
+    <link rel="icon" type="image/svg+xml" href="Images/browser-icon.png">
+    <link rel="apple-touch-icon" href="Images/app-icon.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Mathews B">
+    <link rel="manifest" href="manifest.json">
+    <!-- Importing Arimo Font with all styles -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400..700;1,400..700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css?v=2.2">
+    <link rel="stylesheet" href="modal.css?v=2.2">
+
+    <link rel="canonical" href="https://www.mathewsb.in/">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- JSON-LD Structured Data for Author/Person -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Mathews B",
+      "url": "https://www.mathewsb.in",
+      "sameAs": [
+        "https://www.linkedin.com/in/mathews-b-designer",
+        "https://linktr.ee/mathewsb"
+      ],
+      "jobTitle": "Creative Designer & Developer",
+      "email": "hello@mathewsb.in",
+      "description": "Im Mathews B, a Creative Generalist, Product Designer, and Web Developer based in Kozhikode, Kerala, India. Specializing in UI/UX, Motion Graphics, and Interactive Storytelling. Passionate about media, animation, advertising, filmmaking, lighting, composition, music, and audio. Explore my portfolio for unrestricted design and development capabilities. I love, I create, I do.",
+      "knowsAbout": [
+        "UI/UX Design",
+        "Web Development",
+        "front-end development",
+        "Creative Direction",
+        "Motion Graphics",
+        "Interactive Storytelling",
+        "Product Design",
+        "Filmmaking",
+        "Sound Engineering",
+        "Advertising",
+        "image": "https://www.mathewsb.in/Images/me.png"
+      ]
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Mathews B Portfolio",
+        "url": "https://www.mathewsb.in",
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": "https://www.mathewsb.in/?q={search_term_string}",
+          "query-input": "required name=search_term_string"
+        }
+    }
+    </script>
+</head>
+
+<body>
+
+
+    <!-- Restored Hero Image (Global Scope) -->
+    <!-- Ensures it is not clipped by device-frame -->
+    <img class="mb" src="Images/me.png" alt="Mathews B">
+
+    <!-- Main Container to center everything -->
+    <div class="main-container">
+
+        <!-- The Portfolio Card/Device Frame -->
+        <div class="device-frame">
+            <!-- Meteor Border Animation -->
+            <span class="meteor-line top"></span>
+            <span class="meteor-line right"></span>
+            <span class="meteor-line bottom"></span>
+            <span class="meteor-line left"></span>
+
+
+            <!-- Side Controls (Resume + Home) -->
+            <div class="side-controls">
+
+                <!-- Professional Pulse Badge (Moved to Right Side) -->
+                <div id="profPulseBadge" class="pulse-badge-container" title="PROFESSIONAL PULSE">
+                    <div class="pulse-label-wrapper">
+                        <span id="pulseBadgeText" class="pulse-badge-label">MERITS</span>
+                    </div>
+                    <div class="pulse-icon-wrapper">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <polygon
+                                points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
+                            </polygon>
+                        </svg>
+                        <div class="pulse-wave"></div>
+                    </div>
+                </div>
+
+                <!-- Subtle Separator -->
+                <div style="width: 15px; height: 1px; background: #ffffff; border-radius: 1px; margin: 5px 0 -2px 0;">
+                </div>
+
+                <!-- Accessibility Control Button -->
+                <button id="accessibilityBtn" class="acc-brand-btn" title="Accessibility Settings">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00ff00" stroke-width="2.5"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="7" r="4"></circle>
+                        <path d="M6 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Professional Pulse Drawer (Glassmorphic) -->
+            <div id="profPulseDrawer" class="prof-pulse-drawer hidden-drawer">
+                <div class="drawer-header">
+                    <span class="drawer-title">PROFESSIONAL PULSE</span>
+                    <button id="closeDrawerBtn" class="drawer-close-btn">X</button>
+                </div>
+                <div class="drawer-content scroll-container">
+                    <!-- Resume Segment -->
+                    <section id="resumeSection" class="drawer-section booking-section">
+                        <h4>RESUME</h4>
+                        <div id="resumeAction" class="booking-chip-group">
+                            <!-- Injected by JS -->
+                        </div>
+                    </section>
+
+                    <!-- Achievements Segment -->
+                    <section id="meritSection" class="drawer-section">
+                        <div class="drawer-section-header">
+                            <h4>ACHIEVEMENTS</h4>
+                            <button id="pauseMeritBtn" class="drawer-control-btn" title="Pause/Play">
+                                <svg class="pause-icon" width="10" height="10" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="3" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <rect x="6" y="4" width="4" height="16"></rect>
+                                    <rect x="14" y="4" width="4" height="16"></rect>
+                                </svg>
+                                <svg class="play-icon hidden" width="10" height="10" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="3" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="achievement-marquee-wrapper">
+                            <div id="achievementsGrid" class="anim-vertical"
+                                style="display: flex; flex-direction: column; gap: 8px;">
+                                <!-- Injected by JS -->
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Testimonials Vertical Marquee Segment -->
+                    <section id="testimonialsSection" class="drawer-section">
+                        <div class="drawer-section-header">
+                            <h4>TESTIMONIALS</h4>
+                            <button id="pauseTestimonialBtn" class="drawer-control-btn" title="Pause/Play">
+                                <svg class="pause-icon" width="10" height="10" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="3" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <rect x="6" y="4" width="4" height="16"></rect>
+                                    <rect x="14" y="4" width="4" height="16"></rect>
+                                </svg>
+                                <svg class="play-icon hidden" width="10" height="10" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="3" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="testimonial-marquee-wrapper">
+                            <div id="testimonialMarquee" class="testimonial-marquee">
+                                <!-- Injected by JS -->
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Bookings Segment -->
+                    <section id="sessionsSection" class="drawer-section booking-section">
+                        <h4>SESSIONS</h4>
+                        <p class="section-hint">MENTORSHIP & CONSULTATIONS</p>
+                        <div id="bookingActions" class="booking-chip-group">
+                            <!-- Injected by JS -->
+                        </div>
+                    </section>
+
+                    <!-- Substack Segment -->
+                    <section id="substackSection" class="drawer-section">
+                        <h4>SUBSTACK</h4>
+                        <div id="substackAction" class="booking-chip-group">
+                            <!-- Injected by JS -->
+                        </div>
+                    </section>
+
+                    <!-- Podcast Segment -->
+                    <section id="podcastSection" class="drawer-section booking-section">
+                        <h4>PODCAST</h4>
+                        <div id="podcastAction" class="booking-chip-group">
+                            <!-- Injected by JS -->
+                        </div>
+                    </section>
+                </div>
+            </div>
+
+            <!-- Accessibility Drawer (Glassmorphic) -->
+            <div id="accessibilityDrawer" class="prof-pulse-drawer hidden-drawer">
+                <div class="drawer-header">
+                    <span class="drawer-title">ACCESSIBILITY</span>
+                    <button id="closeAccBtn" class="drawer-close-btn">X</button>
+                </div>
+                <div class="drawer-content scroll-container" id="accDrawerContent">
+                    <!-- Categories injected by JS -->
+                </div>
+            </div>
+
+            <!-- Boot/Preloader Screen -->
+            <!-- PWA SPLASH SCREEN (Only visible in Standalone App) -->
+            <div id="pwa-splash">
+                <div class="splash-logo-container">
+                    <img src="Images/favicon.svg" alt="Loading..." class="splash-logo-img">
+                </div>
+            </div>
+
+
+            <!-- WEB BOOT SCREEN (Radio Wave) -->
+            <div id="boot-screen">
+                <div class="radio-wave"></div>
+                <img src="Images/favicon.svg" alt="Loading..." class="preloader-icon">
+            </div>
+
+            <!-- Top Navigation Bar -->
+            <header class="top-bar">
+                <div class="nav-controls">
+                    <button class="nav-btn" id="navLeftBtn"><span class="btn-content">&lt;</span></button>
+                    <div class="nav-right-group" style="position: relative;">
+                        <button class="nav-btn" id="navRightBtn"><span class="btn-content">&gt;</span></button>
+                        <!-- Dropdown Menu -->
+                        <div id="navDropdown" class="nav-dropdown hidden-dropdown">
+                            <!-- Items injected by JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="header-right-group">
+                    <span class="page-name fade-element" id="pageNameDisplay">HOME</span>
+                    <div class="top-right-icon" id="iconContainer">
+                        <span>[ <span class="icon-display fade-element"></span> ]</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- SEARCH CONTAINER (Moved to Next Line) -->
+            <div id="blogSearchContainer" class="nav-search-container-row" style="display: none;">
+                <div class="search-input-wrapper-row">
+                    <input type="text" id="blogSearchInput" placeholder="SEARCH DATABASE..." autocomplete="off">
+                    <button id="blogSearchReset" title="Reset Search">
+                        <!-- Retry Icon -->
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M23 4v6h-6"></path>
+                            <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Main Content Area -->
+            <!-- Comments: Content changes here using JS as per "SAME PAGE ITSELF" requirement -->
+
+            <main class="content-area" id="mainContent">
+                <div class="background-overlay"></div>
+
+                <!-- HOME View Content -->
+                <div id="home-view" class="view-section active-view">
+                    <div class="hero-text">
+                        <h1>
+                            <span class="char c1">U</span><span class="char c2">N</span>
+                            <span class="reversed char-r-anim">R</span>
+                            <span class="char c3">E</span><span class="char c4">S</span><span
+                                class="char c5">T</span><span class="char c6">R</span><span
+                                class="char c7">I</span><span class="char c8">C</span><span
+                                class="char c9">T</span><span class="char c10">E</span><span class="char c11">D</span>
+                            <span class="green-text">
+                                <span class="char c12">A</span><span class="char c13">R</span><span
+                                    class="char c14">E</span><span class="char c15">A</span>
+                            </span>
+                        </h1>
+                    </div>
+                </div>
+
+                <!-- Placeholder for the person image/texture, now GLOBAL for all pages -->
+                <div class="hero-image-placeholder"></div>
+
+                <!-- DYNAMIC View Content (About, Projects, Blog, Contact) -->
+                <div id="dynamic-content-container" class="view-section hidden-view">
+                    <!-- JS will inject content here -->
+                </div>
+            </main>
+
+            <!-- Custom Horizontal Bottom Menu -->
+            <div class="bottom-nav-menu">
+                <!-- Nav Connecting Line (removed original) -->
+
+                <a href="#" class="nav-item" onclick="openProjectsModal(this); return false;">
+                    <div class="nav-square">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="14" width="7" height="7"></rect>
+                            <rect x="3" y="14" width="7" height="7"></rect>
+                        </svg>
+                    </div>
+                    <span class="nav-label">Projects</span>
+                </a>
+
+                <a href="#" class="nav-item" onclick="openExperienceModal(this); return false;">
+                    <div class="nav-square">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+                        </svg>
+                    </div>
+                    <span class="nav-label">Experience</span>
+                </a>
+
+                <a href="#" class="nav-item" onclick="openCertificatesModal(this); return false;">
+                    <div class="nav-square">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                            <line x1="8" y1="21" x2="16" y2="21"></line>
+                            <line x1="12" y1="17" x2="12" y2="21"></line>
+                        </svg>
+                    </div>
+                    <span class="nav-label">Certificates</span>
+                </a>
+
+                <a href="#" class="nav-item" onclick="openEducationModal(this); return false;">
+                    <div class="nav-square">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+                            <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
+                        </svg>
+                    </div>
+                    <span class="nav-label">Education</span>
+                </a>
+            </div>
+
+            <!-- Advanced Audio Player -->
+            <div class="centered-audio-player">
+                <!-- Row 1: Animated Text (SVG Mask Scan) -->
+                <div class="now-playing-container">
+                    <svg width="300" height="30" viewBox="0 0 300 30" class="now-playing-svg">
+                        <defs>
+                            <!-- Mask Definition -->
+                            <mask id="textMask">
+                                <rect x="0" y="0" width="100%" height="100%" fill="black" class="mask-rect" />
+                            </mask>
+                        </defs>
+                        <!-- Text Layer -->
+                        <!-- White color, Semi-Bold (600), Masked -->
+                        <a id="nowPlayingLink" href="#" target="_blank" style="cursor: pointer;">
+                            <text x="50%" y="20" text-anchor="middle" class="now-playing-text"
+                                mask="url(#textMask)">INITIALIZING...</text>
+                        </a>
+                    </svg>
+                </div>
+
+                <!-- Row 2: Controls -->
+                <div class="audio-controls-row">
+                    <!-- Online/Offline Toggle -->
+                    <button id="modeToggleBtn" class="player-btn control-icon" aria-label="Switch Mode">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="feather feather-globe">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="2" y1="12" x2="22" y2="12"></line>
+                            <path
+                                d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z">
+                            </path>
+                        </svg>
+                    </button>
+
+                    <!-- Prev -->
+                    <button id="prevTrackBtn" class="player-btn control-icon">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="19 20 9 12 19 4 19 20"></polygon>
+                            <line x1="5" y1="19" x2="5" y2="5"></line>
+                        </svg>
+                    </button>
+
+                    <!-- Play/Pause -->
+                    <button id="playPauseBtn" class="player-btn control-icon main-play-btn">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                        </svg>
+                    </button>
+
+                    <!-- Next -->
+                    <button id="nextTrackBtn" class="player-btn control-icon">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="5 4 15 12 5 20 5 4"></polygon>
+                            <line x1="19" y1="5" x2="19" y2="19"></line>
+                        </svg>
+                    </button>
+
+                    <!-- Volume & Mute -->
+                    <div class="vol-group-always-visible">
+                        <input type="range" id="volumeSlider" class="volume-slider" min="0" max="1" step="0.1"
+                            value="0.5">
+                        <button id="muteBtn" class="player-btn control-icon">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                                <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Music Disclaimer -->
+                <div class="audio-disclaimer">
+                    The local music (BGM) is powered by <a href="https://pixabay.com/" target="_blank"
+                        style="text-decoration: none;"><img src="Images/pixabay.svg" alt="Pixabay"
+                            style="height: 9px; width: auto; display: inline-block; vertical-align: middle; filter: invert(48%) sepia(99%) saturate(1478%) hue-rotate(86deg) brightness(108%) contrast(106%); margin: 0 1px; padding-bottom: 2px;"></a>
+                    and the 24x7 Internet FM is<br> powered by <a href="https://nightride.fm/" target="_blank"
+                        style="text-decoration: none;"><img src="Images/Nightride.png" alt="Nightride FM"
+                            style="height: 9px; width: auto; display: inline-block; vertical-align: middle; margin: 0 2px; padding-bottom: 2px;"></a>
+                    FM Night Ride Synthwave. All music rights belong to their<br> respective artists and labels. For any
+                    queries mail to:<a href="mailto:hello@mathewsb.in" target="_blank"><i> hello@mathewsb.in</i></a>
+                </div>
+            </div>
+
+
+            <!-- Taskbar Wrapper -->
+            <div id="taskbarGroup" class="taskbar-group">
+                <!-- Taskbar Container (Moved Above Footer) -->
+                <div id="taskbarContainer" class="taskbar-container">
+                    <!-- Items injected via JS -->
+                </div>
+
+                <!-- Close All Button (Below Taskbar) -->
+                <button id="closeAllTaskbarBtn" class="close-all-taskbar-btn" title="Close All">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+
+
+
+
+            <!-- Logo Bubble feature isolated from footer for proper overlapping -->
+            <div id="logoBubbleContainer" class="logo-bubble-container hidden-bubble">
+                <img src="Images/LogoP.png" id="logoBubbleImg" class="logo-bubble-img" alt="Logo Bubble">
+            </div>
+
+            <!-- Bottom Info Bar -->
+            <footer class="bottom-bar">
+                <!-- Changed href to avoid page reload, added onclick to trigger bubble effect -->
+                <a href="javascript:void(0)" class="logo-container" id="logoLink"
+                    onclick="triggerLogoBubble(); return false;">
+                    <div class="shatter-wrapper">
+                        <img src="Images/logo.svg" class="logo-shard s1" alt="MATHEWS B">
+                        <img src="Images/logo.svg" class="logo-shard s2" alt="MATHEWS B">
+                        <img src="Images/logo.svg" class="logo-shard s3" alt="MATHEWS B">
+                    </div>
+                </a>
+
+
+
+                <div class="status-box">
+                    <div class="scrolling-content">
+                        <span class="scrolling-text-item">LOADING...</span>
+                        <!-- Duplicate content for seamless loop -->
+                        <span class="scrolling-text-item">LOADING...</span>
+                    </div>
+                </div>
+            </footer>
+
+            <!-- Google Drive Modal (Hidden by default) -->
+            <div id="driveModal" class="drive-modal-overlay">
+                <div class="drive-modal-container">
+                    <!-- Drive Brand info (Top Left) -->
+                    <div class="drive-branding-left"
+                        style="position: absolute; top: 18px; left: 15px; display: flex; align-items: center; gap: 5px; z-index: 10;">
+                        <span
+                            style="font-size: 6px; color: rgba(255,255,255,0.6); text-transform: uppercase; font-family: 'Arimo', sans-serif; letter-spacing: 0.5px; opacity: 0.8;">POWERED
+                            BY</span>
+                        <a href="https://drive.google.com/" target="_blank"
+                            style="display: flex; align-items: center; text-decoration: none;">
+                            <img src="Images/G-DRIVE.png" alt="Google Drive"
+                                style="height: 16px; width: auto; object-fit: contain;">
+                        </a>
+                    </div>
+
+                    <!-- Window Controls -->
+                    <div class="window-controls">
+                        <button id="minimizeDriveBtn" class="window-btn minimize-btn" aria-label="Minimize">
+                            <span class="minimize-icon">_</span>
+                        </button>
+                        <button id="closeDriveBtn" class="window-btn close-drive-btn" aria-label="Close">
+                            <span class="close-icon-x">X</span>
+                        </button>
+                    </div>
+
+                    <!-- Drive Content (White Border) -->
+                    <div class="drive-content-wrapper">
+                        <iframe id="driveFrame" class="drive-iframe" frameborder="0"></iframe>
+                    </div>
+
+                    <!-- Logo Area Removed as per user request -->
+                </div>
+            </div>
+
+            <!-- Contact Google Form Modal (Reusing Drive Styles) -->
+            <div id="contactModal" class="drive-modal-overlay">
+                <div class="drive-modal-container">
+                    <!-- Window Controls -->
+                    <div class="window-controls">
+                        <button id="minimizeContactBtn" class="window-btn minimize-btn" aria-label="Minimize">
+                            <span class="minimize-icon">_</span>
+                        </button>
+                        <button id="closeContactBtn" class="window-btn close-drive-btn" aria-label="Close">
+                            <span class="close-icon-x">X</span>
+                        </button>
+                    </div>
+
+                    <!-- Form Content -->
+                    <div class="drive-content-wrapper contact-form-wrapper">
+                        <form id="contactForm" class="contact-form-container" action="">
+                            <div class="form-group">
+                                <label for="contactName">NAME</label>
+                                <input type="text" id="contactName" name="name" required
+                                    placeholder="IDENTIFY YOURSELF">
+                            </div>
+                            <div class="form-group">
+                                <label for="contactEmail">EMAIL</label>
+                                <input type="email" id="contactEmail" name="email" placeholder="FREQUENCY_CHANNEL">
+                            </div>
+                            <div class="form-group">
+                                <label for="contactMessage">MESSAGE</label>
+                                <textarea id="contactMessage" name="message" required
+                                    placeholder="TRANSMIT DATA..."></textarea>
+                            </div>
+                            <button type="submit" class="submit-btn-form">SEND TRANSMISSION</button>
+                        </form>
+                        <div id="contactSuccessMsg" class="success-message" style="display:none;">
+                            <h3 style="color:#00ff00;">TRANSMISSION RECEIVED</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Projects Modal (New) -->
+            <div id="projectsModal" class="drive-modal-overlay">
+                <div class="drive-modal-container projects-modal-container">
+                    <!-- Window Controls -->
+                    <div class="window-controls">
+                        <button id="minimizeProjectsBtn" class="window-btn minimize-btn" aria-label="Minimize">
+                            <span class="minimize-icon">_</span>
+                        </button>
+                        <button id="closeProjectsBtn" class="window-btn close-drive-btn" aria-label="Close">
+                            <span class="close-icon-x">X</span>
+                        </button>
+                    </div>
+
+                    <!-- Projects Content Area (White Border) -->
+                    <div class="drive-content-wrapper projects-content-wrapper">
+                        <div class="projects-inner-content">
+                            <h2 class="projects-heading">LATEST <span class="green-text">PROJECTS</span></h2>
+                            <div class="projects-underline"></div>
+
+                            <div id="projectsContainer" class="projects-list">
+                                <!-- Projects injected by JS -->
+                            </div>
+
+                            <!-- Old Projects Button (Dynamic) -->
+                            <!-- Old Projects Button (Dynamic) -->
+                            <div id="legacyProjectsWrapper" class="old-projects-wrapper" style="display: none;">
+                                <a id="legacyProjectsBtn" href="#" target="_blank" class="old-projects-btn">OLD
+                                    PROJECTS</a>
+                            </div>
+                        </div>
+
+                        <!-- Project Scroll Indicator -->
+                        <div id="projectScrollIndicator" class="project-scroll-indicator hidden-indicator">
+                            <div class="indicator-circle">
+                                <div class="indicator-arrows">
+                                    <span></span>
+                                    <span></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Experience Modal -->
+            <div id="experienceModal" class="drive-modal-overlay">
+                <div class="drive-modal-container projects-modal-container experience-modal-container">
+                    <!-- Window Controls -->
+                    <div class="window-controls">
+                        <div class="window-controls-right" style="margin-left:auto; display: flex; gap: 5px;">
+                            <button id="minimizeExperienceBtn" class="window-btn minimize-btn" aria-label="Minimize">
+                                <span class="minimize-icon">_</span>
+                            </button>
+                            <button id="closeExperienceBtn" class="window-btn close-drive-btn" aria-label="Close">
+                                <span class="close-icon-x">X</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Experience Content Area (White Border) -->
+                    <div class="drive-content-wrapper projects-content-wrapper option-experience-content">
+                        <div class="projects-inner-content option-experience-inner">
+                            <h2 class="projects-heading option-experience-heading">WORK <span
+                                    class="green-text">EXPERIENCE</span></h2>
+                            <div class="projects-underline option-experience-underline"></div>
+
+                            <div id="experienceContainer" class="projects-list option-experience-list">
+                                <!-- Experience injected by JS -->
+                            </div>
+                        </div>
+
+                        <!-- Experience Scroll Indicator -->
+                        <div id="experienceScrollIndicator" class="project-scroll-indicator hidden-indicator">
+                            <div class="indicator-circle">
+                                <div class="indicator-arrows">
+                                    <span></span>
+                                    <span></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Education Modal -->
+            <div id="educationModal" class="drive-modal-overlay">
+                <div class="drive-modal-container projects-modal-container education-modal-container">
+                    <!-- Window Controls -->
+                    <div class="window-controls">
+                        <div class="window-controls-right" style="margin-left:auto; display: flex; gap: 5px;">
+                            <button id="minimizeEducationBtn" class="window-btn minimize-btn" aria-label="Minimize">
+                                <span class="minimize-icon">_</span>
+                            </button>
+                            <button id="closeEducationBtn" class="window-btn close-drive-btn" aria-label="Close">
+                                <span class="close-icon-x">X</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Education Content Area (White Border) -->
+                    <div class="drive-content-wrapper projects-content-wrapper option-education-content">
+                        <div class="projects-inner-content option-education-inner">
+                            <h2 class="projects-heading option-education-heading">EDUCATION <span
+                                    class="green-text">STATUS</span></h2>
+                            <div class="projects-underline option-education-underline"></div>
+
+                            <div id="educationContainer" class="projects-list option-education-list">
+                                <!-- Education injected by JS -->
+                            </div>
+                        </div>
+
+                        <!-- Education Scroll Indicator -->
+                        <div id="educationScrollIndicator" class="project-scroll-indicator hidden-indicator">
+                            <div class="indicator-circle">
+                                <div class="indicator-arrows">
+                                    <span></span>
+                                    <span></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CONTACT SCRIPT  -->
+
+            <script>
+                $("#contactForm").submit(function (e) {
+                    e.preventDefault();
+
+                    const $form = $("#contactForm");
+                    const $btn = $form.find(".submit-btn-form");
+                    const originalText = "SEND TRANSMISSION";
+
+                    // Offline Handling
+                    if (!navigator.onLine) {
+                        $btn.text("NO INTERNET");
+                        $btn.prop("disabled", true);
+                        $btn.addClass("error-state"); // Optional styling hook
+
+                        // Auto-recover when online
+                        const handleOnline = () => {
+                            $btn.text(originalText);
+                            $btn.prop("disabled", false);
+                            $btn.removeClass("error-state");
+                            window.removeEventListener('online', handleOnline);
+                        };
+                        window.addEventListener('online', handleOnline);
+                        return;
+                    }
+
+                    // Start Loading Animation
+                    $btn.prop("disabled", true);
+                    let dots = 0;
+                    $btn.text("SENDING");
+
+                    const interval = setInterval(() => {
+                        dots = (dots + 1) % 4;
+                        let text = "SENDING";
+                        for (let i = 0; i < dots; i++) text += ".";
+                        $btn.text(text);
+                    }, 500);
+
+                    $.ajax({
+                        url: "https://script.google.com/macros/s/AKfycbyP8DuadJLCmjr_9C2xtF84dLZwlhSgaLZN7UYvj1JXO52v3Da7Ba5WQAwBZe0sbmh6/exec",
+                        data: $form.serialize(),
+                        method: "post",
+                        success: function (response) {
+                            clearInterval(interval);
+                            $btn.text("SENT SUCCESSFULLY");
+
+                            // Clear form inputs (Refresh)
+                            $form[0].reset();
+
+                            $form.hide();
+
+                            // Update Success Text Dynamically (or rely on static HTML if changed there)
+                            const $successMsg = $("#contactSuccessMsg");
+                            $successMsg.html(`
+                                <div class="success-icon"></div>
+                                <h3 style="color:#00ff00;">TRANSMISSION RECEIVED</h3>
+                                <p style="color:#fff; opacity:0.8; font-size:0.9em; letter-spacing:1px; margin-top:5px;">WE WILL RESPOND SHORTLY</p>
+                            `);
+                            $successMsg.show();
+
+                            const $modalContainer = $form.closest(".drive-modal-container");
+                            $modalContainer.addClass("success-mode");
+                            // Explicitly hide window controls
+                            $modalContainer.find(".window-controls").hide();
+
+                            // Auto-Close Logic (3 Seconds)
+                            setTimeout(() => {
+                                if (window.closeContactModal) window.closeContactModal();
+                            }, 3000);
+
+                            // Restore button state for next time (even if hidden)
+                            setTimeout(() => {
+                                $btn.text(originalText);
+                                $btn.prop("disabled", false);
+                            }, 1000);
+                        },
+                        error: function (err) {
+                            clearInterval(interval);
+                            $btn.text("ERROR. RETRY.");
+                            setTimeout(() => {
+                                $btn.text(originalText);
+                                $btn.prop("disabled", false);
+                            }, 3000);
+                        }
+                    })
+                });
+            </script>
+
+
+
+
+            <!-- © MATHEWS B COPYRIGHT -->
+            <a href="https://linktr.ee/YOUR_LINKTREE_HERE" target="_blank" class="copyright-footer"
+                id="copyrightFooter">
+                <div class="c-item item-1">© MATHEWS B / 2026 <i>V<b>2.2</b></i></div>
+                <div class="c-item item-2" id="dateTimeDisplay">LOADING...</div>
+            </a>
+
+            <!-- Cookie Consent Strip (Left Side - Inside Frame) -->
+            <div id="cookieConsentStrip" class="cookie-strip hidden-strip">
+                <div class="cookie-content">
+                    <span class="cookie-text">SYSTEM ALERT: <a href="#" id="openCookiePolicy"
+                            class="cookie-link">Cookies required for
+                            optimal performance.</a></span>
+                    <button id="quickAcceptCookie" class="cookie-ok-btn">[ OK ]</button>
+                </div>
+                <!-- Close button rectangle strip outside OK button (Styled with Black BG) -->
+                <div class="cookie-close-wrapper" id="cookieCloseWrapper">
+                    <span class="cookie-close-strip" id="cookieCloseStrip">&times;</span>
+                </div>
+            </div>
+
+            <!-- COOKIE POLICY MODAL (Replica of Install Popup) -->
+            <div id="cookiePolicyModal" class="popup-overlay hidden-popup">
+                <div class="popup-box cookie-popup-box">
+                    <h3 style="color:#00ff00; margin:10px 0; letter-spacing:1px;">COOKIE POLICY</h3>
+                    <div
+                        style="color:#fff; font-size:13px; line-height:1.5; margin-bottom: 20px; text-align: left; padding: 0 10px;">
+                        <p style="margin-bottom:10px;">
+                            We use local storage and cookies to enhance your experience:
+                        </p>
+                        <ul style="margin-bottom:10px; padding-left: 20px; list-style-type: square; color: #00ff00;">
+                            <li><span style="color:#fff"><b>System Preferences:</b> Saving your theme and PWA
+                                    settings.</span></li>
+                            <li><span style="color:#fff"><b>Google Services:</b> Embedded Drive and Forms may use
+                                    third-party cookies.</span></li>
+                            <li><span style="color:#fff"><b>Analytics:</b> Anonymous usage data for optimization.</span>
+                            </li>
+                        </ul>
+                        <p>By clicking ACCEPT, you acknowledge our data usage.</p>
+                    </div>
+                    <div style="margin-top:20px; display:flex; gap:10px; justify-content:center;">
+                        <button id="cookieCancelBtn" class="pwa-btn-secondary">CANCEL</button>
+                        <button id="cookieAcceptBtn" class="pwa-btn-primary">ACCEPT</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Privacy | Terms Links (Bottom Left) -->
+            <div class="footer-links"
+                style="position: absolute; bottom: 15px; left: 32px; font-size: 7px; font-family: 'Arimo', sans-serif; z-index: 100;">
+                <a href="#" id="openPrivacyModal" style="color: #fff; text-decoration: none; opacity: 0.7;">PRIVACY</a>
+                <span style="color: #fff; opacity: 0.5; margin: 0 5px;">|</span>
+                <a href="#" id="openTermsModal" style="color: #fff; text-decoration: none; opacity: 0.7;">TERMS</a>
+            </div>
+
+            <!-- PRIVACY MODAL -->
+            <div id="privacyModal" class="popup-overlay hidden-popup">
+                <div class="popup-box cookie-popup-box" style="padding: 40px 20px;">
+                    <button id="privacyCloseX" class="popup-close-x">&times;</button>
+                    <h3 style="color:#00ff00; margin: 0 0 15px 0; letter-spacing:1px;">PRIVACY POLICY</h3>
+                    <div
+                        style="color:#fff; font-size:13px; line-height:1.5; margin-bottom: 0; text-align: left; padding: 0 10px;">
+                        <p style="margin-bottom:10px;">
+                            We value your privacy. This policy outlines how we handle your data:
+                        </p>
+                        <ul style="margin-bottom:10px; padding-left: 20px; list-style-type: square; color: #00ff00;">
+                            <li><span style="color:#fff"><b>Data Collection:</b> We collect anonymous usage data for
+                                    performance optimization.</span></li>
+                            <li><span style="color:#fff"><b>Cookies:</b> We use local storage to save<br> your
+                                    preferences.</span></li>
+                            <li><span style="color:#fff"><b>Contact:</b> For queries, email <a
+                                        href="mailto:hello@mathewsb.in"
+                                        style="color:#00ff00; text-decoration:underline;">hello@mathewsb.in</a>.</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- TERMS MODAL -->
+            <div id="termsModal" class="popup-overlay hidden-popup">
+                <div class="popup-box cookie-popup-box" style="padding: 40px 20px;">
+                    <button id="termsCloseX" class="popup-close-x">&times;</button>
+                    <h3 style="color:#00ff00; margin: 0 0 15px 0; letter-spacing:1px;">TERMS OF USE</h3>
+                    <div
+                        style="color:#fff; font-size:13px; line-height:1.5; margin-bottom: 0; text-align: left; padding: 0 10px;">
+                        <p style="margin-bottom:10px;">
+                            By accessing this website, you agree to the following terms:
+                        </p>
+                        <ul style="margin-bottom:10px; padding-left: 20px; list-style-type: square; color: #00ff00;">
+                            <li><span style="color:#fff"><b>Usage:</b> This site is for personal portfolio viewing
+                                    only.</span></li>
+                            <li><span style="color:#fff"><b>Content:</b> All assets are property of<br> Mathews
+                                    B.</span>
+                            </li>
+                            <li><span style="color:#fff"><b>Contact:</b> <a href="mailto:hello@mathewsb.in"
+                                        style="color:#00ff00; text-decoration:underline;">hello@mathewsb.in</a>.</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- POPUP AD BOX -->
+            <script src="Updates/ad-popup.js"></script>
+
+            <!-- Global Scroll Indicator -->
+            <div id="globalScrollIndicator" class="scroll-indicator hidden-indicator">
+                <svg class="scroll-arrow" viewBox="0 0 24 24">
+                    <path d="M7 13l5 5 5-5M7 6l5 5 5-5"></path>
+                </svg>
+                <span class="scroll-text-hint">SCROLL / SWIPE DOWN</span>
+            </div>
+
+        </div>
+
+
+
+
+
+        <audio id="bg-audio" src="https://stream.nightride.fm/nightride.mp3"></audio>
+
+        <!-- Load Data Files -->
+        <script src="Updates/blog-data.js"></script>
+        <script src="Updates/about-data.js"></script>
+        <script src="Updates/scrolltxt-footer.js"></script>
+
+        <!-- Section Data Files -->
+        <script src="Updates/education-data.js"></script>
+        <script src="Updates/experience-data.js"></script>
+        <script src="Updates/projects-data.js"></script>
+        <script src="Updates/certificates-data.js"></script>
+        <script src="Updates/works-data.js"></script>
+        <script src="Updates/legacy-projects-data.js"></script>
+
+        <!-- Custom Music Playlist (Extracted) -->
+        <script src="Updates/music-playlist.js"></script>
+        <!-- Work Status Data -->
+        <script src="Updates/work-status.js"></script>
+        <script src="script.js?v=2.2"></script>
+        <!-- Professional Data -->
+        <script src="Updates/achievements-data.js"></script>
+        <script src="Updates/accessibility-data.js"></script>
+        <script src="Updates/pulsebadge-data.js"></script>
+        <script src="Updates/testimonials-data.js"></script>
+        <script src="Updates/appointments-data.js"></script>
+        <script src="Updates/resume-data.js"></script>
+        <script src="Updates/substack-data.js"></script>
+        <script src="Updates/podcasts-data.js"></script>
+        <script src="Updates/contact-data.js"></script>
+
+        <!-- INSECT AI MODAL (BUZZ AI) -->
+        <div id="insectAiModal" class="drive-modal-overlay">
+            <div class="drive-modal-container" id="insectAiContainer">
+                <!-- Window Controls -->
+                <div class="window-controls">
+                    <div class="window-title"
+                        style="padding-left: 0; color: var(--primary-green); font-weight: bold; font-family: 'Arimo', sans-serif; font-size: 0.9rem; display: flex; align-items: center;">
+                        <div class="insect-icon-static"></div>
+                        <span>BUZZ <sup style="font-size: 0.6em;">AI</sup></span>
+                    </div>
+                    <div class="window-controls-right" style="display: flex; gap: 5px;">
+                        <button id="minimizeInsectBtn" class="window-btn minimize-btn" aria-label="Minimize">
+                            <span class="minimize-icon">_</span>
+                        </button>
+                        <button id="closeInsectBtn" class="window-btn close-drive-btn" aria-label="Close">
+                            <span class="close-icon-x">X</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- AI Content Area -->
+                <div class="drive-content-wrapper insect-ai-wrapper">
+
+                    <!-- Chat History -->
+                    <div id="insectChatHistory" class="insect-chat-history">
+                        <!-- Welcome Message -->
+                        <div class="chat-message ai-message">
+                            <div class="message-content">
+                                HELLO! I'M BUZZ AI.<br>
+                                ASK ME ANYTHING ABOUT MATHEWS B.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Input Area -->
+                    <div class="insect-input-area">
+
+                        <input type="file" id="insectFileInput" style="display: none;" accept="image/*,.pdf">
+
+                        <!-- Search/Prompt Input -->
+                        <input type="text" id="insectSearchInput" class="insect-search-input"
+                            placeholder="ASK BUZZ AI...">
+
+                        <!-- Send Button -->
+                        <button id="insectSendBtn" class="insect-send-btn"
+                            style="transform: none !important; transition: none !important;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="22" y1="2" x2="11" y2="13"></line>
+                                <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <!-- FAQ Section RESTORED & UPDATED -->
+                    <div class="insect-faq-section">
+                        <div class="faq-title">SUGGESTED QUERIES</div>
+                        <div class="faq-tags">
+                            <span class="faq-tag" onclick="insectAsk('Who are you?')">WHO ARE YOU?</span>
+                            <span class="faq-tag" onclick="insectAsk('Selected Works')">SELECTED WORKS</span>
+                            <span class="faq-tag" onclick="insectAsk('Contact Info')">CONTACT INFO</span>
+                            <span class="faq-tag" onclick="insectAsk('Skills')">SKILLS</span>
+                        </div>
+
+                        <!-- Footer Actions -->
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+                            <button id="deleteChatHistoryBtn" class="delete-history-btn">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                    style="margin-right: 4px;">
+                                    <polyline points="3 6 5 6 21 6"></polyline>
+                                    <path
+                                        d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
+                                    </path>
+                                </svg>
+                                DELETE HISTORY
+                            </button>
+
+                            <!-- Voice Toggle REMOVED -->
+                            <div style="display:flex; gap:10px;">
+                                <button id="refreshInsectBtn" class="insect-retry-btn" title="Retry">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                        style="margin-right: 4px;">
+                                        <path d="M23 4v6h-6"></path>
+                                        <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+                                    </svg>
+                                    RETRY
+                                </button>
+
+                                <!-- Voice Control Footer -->
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Custom Blog Modal -->
+        <div id="blogModal" class="drive-modal-overlay">
+            <div class="drive-modal-container" id="blogModalContainer">
+                <!-- Window Controls -->
+                <div class="window-controls">
+                    <div class="window-controls-right" style="margin-left:auto; display: flex; gap: 5px;">
+                        <button id="minimizeBlogBtn" class="window-btn minimize-btn" aria-label="Minimize">
+                            <span class="minimize-icon">_</span>
+                        </button>
+                        <button id="closeBlogBtn" class="window-btn close-drive-btn" aria-label="Close">
+                            <span class="close-icon-x">X</span>
+                        </button>
+                    </div>
+                </div>
+
+
+
+                <!-- Floating Scroll-to-Top Button -->
+                <button id="blogScrollTopBtn" title="Back to Top">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="18 15 12 9 6 15"></polyline>
+                    </svg>
+                </button>
+
+                <!-- Blog Detail Content (Injected by JS) -->
+                <div class="drive-content-wrapper blog-detail-wrapper" id="blogContentArea">
+                    <!-- Content goes here -->
+                </div>
+            </div>
+        </div>
+        <!-- Service Worker Registration for PWA -->
+        <!-- PWA Installation Handler -->
+        <script src="pwa-install.js"></script>
+
+        <!-- TUTORIAL OVERLAY (First Visit) -->
+        <div id="tutorial-overlay" class="tutorial-overlay">
+            <div class="tutorial-card">
+                <div class="tutorial-icon">
+                    <div class="rocket-container">
+                        <svg class="rocket-svg" viewBox="0 0 512 512">
+                            <path
+                                d="M256,16C167.6,16,96,87.6,96,176c0,42.5,16.5,81,42.9,109.6C123.9,313.1,112,343.9,112,376c0,21.4,12.8,39.8,30.7,49c4.3-1.6,9-2.5,13.8-2.5c22.1,0,40,17.9,40,40v16c0,8.8,7.2,16,16,16h87c8.8,0,16-7.2,16-16v-16c0-22.1,17.9-40,40-40c4.9,0,9.5,0.9,13.8,2.5c17.9-9.2,30.7-27.6,30.7-49c0-32.1-11.9-62.9-26.9-90.4C400.5,257,416,218.5,416,176C416,87.6,344.4,16,256,16z M256,224c-26.5,0-48-21.5-48-48s21.5-48,48-48s48,21.5,48,48S282.5,224,256,224z" />
+                        </svg>
+                        <div class="rocket-fire"></div>
+                    </div>
+                </div>
+                <h3>SYSTEM READY</h3>
+                <p>WELCOME TO THE MATHEWS B PORTFOLIO INTERFACE.</p>
+
+                <div class="tutorial-visual">
+                    <div class="anim-hand">
+                        <!-- Custom Hand SVG (Brand Green) -->
+                        <svg class="tutorial-svg" viewBox="0 0 24 24">
+                            <path
+                                d="M9 11.24V7.5C9 6.12 10.12 5 11.5 5S14 6.12 14 7.5v3.74c1.21-.81 2-2.18 2-3.74C16 5.01 13.99 3 11.5 3S7 5.01 7 7.5c0 1.56.79 2.93 2 3.74zm9.84 4.63l-2.54-.63c-1.6-.4-2.3-.9-3.3-2.1V7.5C13 6.67 12.33 6 11.5 6S10 6.67 10 7.5v10.74l-3.43-.72a1.5 1.5 0 0 0-1.76.99l-.51 2.5 6.38 6.4c.7.71 1.63 1.09 2.62 1.09h5.21c1.55 0 2.8-1.25 2.8-2.8v-7.6c0-1.22-.92-2.3-2.16-2.47z" />
+                        </svg>
+                    </div>
+                    <div class="anim-arrows trim-path-arrows">
+                        <!-- Custom Stroke-Based Double Arrow SVG for Trimpath - LARGE SIZE -->
+                        <svg class="tutorial-svg stroked-arrow" viewBox="0 0 24 24"
+                            style="fill: none; stroke: var(--primary-green); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round;">
+                            <path class="arrow-path-left" d="M11 17l-5-5 5-5 M6 12h7" />
+                            <path class="arrow-path-right" d="M13 17l5-5-5-5 M18 12h-7" />
+                        </svg>
+                    </div>
+                </div>
+
+                <p style="font-size: 0.8em; color: #888;">
+                    USE <b>SWIPE</b> GESTURES OR <b>ARROW KEYS</b> TO NAVIGATE <b>ALL SECTORS</b>.
+                </p>
+
+                <button id="closeTutorialBtn">ACKNOWLEDGED</button>
+            </div>
+        </div>
+
+        <!-- CONTACT GUIDE OVERLAY (Buzz AI Helper) -->
+        <div id="contact-guide-overlay" class="tutorial-overlay">
+            <div class="tutorial-card">
+                <h3>BUZZ AI ASSISTANT</h3>
+                <p>NEED ASSISTANCE?</p>
+
+                <div class="tutorial-visual">
+                    <!-- USING CSS-ONLY INSECT (Scaled Up) -->
+                    <div class="insect-icon-static anim-flying-insect" style="transform: scale(4); margin: 20px;"></div>
+                </div>
+
+                <p style="font-size: 0.8em; color: #888;">
+                    <b>CATCH</b> OR <b>CLICK</b> THE INSECT IN CONTACT PAGE TO INITIATE<br>AI CHAT.
+                </p>
+
+                <button id="closeContactGuideBtn">UNDERSTOOD</button>
+            </div>
+        </div>
+
+        <!-- Logo Bubble Feature Script and Styles -->
+        <style>
+            /* Logo Bubble Styles */
+            .logo-bubble-container {
+                position: absolute;
+                bottom: 40px;
+                /* Above the logo */
+                left: -2px;
+                /* Roughly above the M logo */
+                width: 100px;
+                height: 100px;
+                z-index: 999999;
+                pointer-events: none;
+                align-items: center;
+                justify-content: center;
+                transform: scale(0);
+                opacity: 0;
+            }
+
+            .logo-bubble-container.hidden-bubble {
+                display: none;
+            }
+
+            .logo-bubble-container.show-bubble {
+                display: flex;
+                animation: bubble-appear 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            }
+
+            .logo-bubble-container.blast-bubble {
+                display: flex;
+                animation: bubble-blast 0.35s forwards ease-out;
+            }
+
+            .logo-bubble-img {
+                width: 100%;
+                height: 100%;
+                object-fit: contain;
+                filter: drop-shadow(0 0 10px rgba(0, 255, 0, 0.6));
+            }
+
+            @keyframes bubble-appear {
+                0% {
+                    transform: scale(0.1);
+                    opacity: 0;
+                }
+
+                70% {
+                    transform: scale(1.1);
+                    opacity: 1;
+                }
+
+                100% {
+                    transform: scale(1);
+                    opacity: 1;
+                }
+            }
+
+            @keyframes bubble-blast {
+                0% {
+                    transform: scale(1);
+                    opacity: 1;
+                    filter: brightness(1);
+                }
+
+                40% {
+                    transform: scale(1.4);
+                    opacity: 1;
+                    filter: brightness(1.5);
+                }
+
+                100% {
+                    transform: scale(3.5);
+                    opacity: 0;
+                    filter: brightness(2);
+                    display: none;
+                }
+            }
+        </style>
+
+        <script>
+            let isBubbleActive = false;
+            function triggerLogoBubble() {
+                if (isBubbleActive) return;
+
+                // Do not trigger if pulse drawer is open
+                const pulseDrawer = document.getElementById('profPulseDrawer');
+                if (pulseDrawer && !pulseDrawer.classList.contains('hidden-drawer')) {
+                    return;
+                }
+
+                const bubble = document.getElementById('logoBubbleContainer');
+                if (!bubble) return;
+
+                isBubbleActive = true;
+
+                // reset classes
+                bubble.classList.remove('blast-bubble', 'hidden-bubble', 'show-bubble');
+
+                // force reflow to restart animations
+                void bubble.offsetWidth;
+                bubble.classList.add('show-bubble');
+
+                // wait a few seconds, then blast
+                setTimeout(() => {
+                    bubble.classList.remove('show-bubble');
+                    bubble.classList.add('blast-bubble');
+
+                    // wait for blast to finish, then hide completely
+                    setTimeout(() => {
+                        bubble.classList.remove('blast-bubble');
+                        bubble.classList.add('hidden-bubble');
+                        isBubbleActive = false;
+                    }, 350);
+
+                }, 2800); // stay as a bubble for ~2.8 seconds before popping
+            }
+        </script>
+
+        <div id="v-keyboard" class="hidden-kb">
+            <!-- Rows injected by JS -->
+        </div>
+</body>
+
+</html>
